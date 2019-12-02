@@ -2,13 +2,13 @@ const _ = require('lodash');
 const input = require('./day1input');
 
 function day1_part1(input) {
-    return _.chain(input)
+    return _(input)
             .map(mass => _.floor(mass / 3) - 2)
             .sum();
 }
 
 function day1_part2(input) {
-    return _.chain(input)
+    return _(input)
             .map(mass => {
                 let totalFuel = _.floor(mass / 3) - 2;
                 let fuel = totalFuel;
