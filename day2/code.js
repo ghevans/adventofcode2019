@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const input = require('./day2input');
+const input = require('./input');
 
 function day2_part1(input, noun, verb) {
     input[1] = noun;

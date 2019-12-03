@@ -1,4 +1,4 @@
-let day1input = [90903,
+let input = [90903,
     135889,
     120859,
     137397,
@@ -99,4 +99,4 @@ let day1input = [90903,
     112849,
     60402];
 
-module.exports = day1input;
+module.exports = input;
