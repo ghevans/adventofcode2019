@@ -1,12 +1,16 @@
 const _ = require('lodash');
 const input = require('./input');
 
+const END = 99;
+const ADD = 1;
+const MULT = 2;
+
 function day2_part1(input, noun, verb) {
     input[1] = noun;
     input[2] = verb;
 
     let loc = 0;
-    while (input[loc] != 99) {
+    while (input[loc] != END) {
         handleIntCode(input, loc);
         loc += 4;
     }
@@ -19,10 +23,10 @@ function handleIntCode(program, start) {
     let right = program[start+2];
     let dest = program[start+3];
     switch(opCode) {
-        case 1:
+        case ADD:
             program[dest] = program[left] + program[right];
             break;
-        case 2:
+        case MULT:
             program[dest] = program[left] * program[right];
             break;
     }
