@@ -35,7 +35,6 @@ function part2(input) {
             passwords.push(i);
         }
     }
-    // console.log(passwords)
     return passwords.length;
 }
 
