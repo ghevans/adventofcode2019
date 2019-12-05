@@ -13,8 +13,7 @@ const EQ = 8;
 
 const POSITION = 0;
 const IMMEDIATE = 1;
-
-function determineVal(mode, loc) {
+function determineVal(program, mode, loc) {
     switch (mode) { 
         case POSITION:
             return program[program[loc]];
@@ -25,13 +24,13 @@ function determineVal(mode, loc) {
     } 
 }
 
-function runProgram(input) {
+function runProgram(program, input) {
     let loc = 0, output = 0;
     while (program[loc] != END) {
         let inst = program[loc].toString().padStart(5, '0'); // always pad for safety, even if no use
         let opCode = Number(inst.slice(3));
-        let left = determineVal(Number(inst[2]), loc + 1);
-        let right = determineVal(Number(inst[1]), loc + 2);
+        let left = determineVal(program, Number(inst[2]), loc + 1);
+        let right = determineVal(program, Number(inst[1]), loc + 2);
         let dest = program[loc+3];
         switch (opCode) {
             case ADD:
@@ -47,22 +46,14 @@ function runProgram(input) {
                 loc += 2;
                 break;
             case OUT:
-                output = determineVal(Number(inst[2]), loc+1);
+                output = determineVal(program, Number(inst[2]), loc+1);
                 loc += 2;
                 break;
             case JIT:
-                if (left !== 0) {
-                    loc = right;
-                } else {
-                    loc += 3;
-                }
+                loc = (left !== 0) ? right : loc + 3;
                 break;
             case JIF:
-                if (left === 0) {
-                    loc = right;
-                } else {
-                    loc += 3;
-                }
+                loc = (left === 0) ? right : loc + 3;
                 break;
             case LT:
                 program[dest] = (left < right) ? 1 : 0;
@@ -81,13 +72,13 @@ function runProgram(input) {
     return output;
 }
 
-function part1(input) {
-    return runProgram(1);
+function part1() {
+    return runProgram(_.cloneDeep(program), 1);
 }
 
-function part2(input) {
-    return runProgram(5);
+function part2() {
+    return runProgram(_.cloneDeep(program), 5);
 }
 
-// console.log("Part 1 - " + part1());
+console.log("Part 1 - " + part1());
 console.log("Part 2 - " + part2());
