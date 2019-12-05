@@ -25,18 +25,15 @@ function determineVal(mode, loc) {
 function part1() {
     let loc = 0, output = 0;
     while (program[loc] != END) {
-        let inst = program[loc].padStart(5, '0'); // always pad for safety, even if no use
+        let inst = program[loc].toString().padStart(5, '0'); // always pad for safety, even if no use
         let opCode = Number(inst.slice(3));
         let left = determineVal(Number(inst[2]), loc + 1);
         let right = determineVal(Number(inst[1]), loc + 2);
         let dest = program[loc+3];
-        console.log("code: " + opCode);
-        console.log("left: " + left);
-        console.log("right: " + right);
         switch (opCode) {
             case ADD:
+                console.log("ADD | " + left + " + " + right + " = " + (left + right));
                 console.log("dest: " + dest);
-                console.log("Value: " + (left + right));
                 program[dest] = left + right;
                 loc += 4;
                 break;
@@ -47,8 +44,7 @@ function part1() {
                 loc += 4;
                 break;
             case IN:
-                
-                console.log("dest: " + dest);
+                console.log("dest: " + program[loc+1]);
                 console.log("Value: 1");
                 program[program[loc+1]] = 1; // hardcoded, doesn't feel right???
                 loc += 2;
