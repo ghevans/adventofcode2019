@@ -32,26 +32,19 @@ function part1() {
         let dest = program[loc+3];
         switch (opCode) {
             case ADD:
-                console.log("ADD | " + left + " + " + right + " = " + (left + right));
-                console.log("dest: " + dest);
                 program[dest] = left + right;
                 loc += 4;
                 break;
             case MULT:
-                console.log("dest: " + dest);
-                console.log("Value: " + (left * right));
                 program[dest] = left * right;
                 loc += 4;
                 break;
             case IN:
-                console.log("dest: " + program[loc+1]);
-                console.log("Value: 1");
                 program[program[loc+1]] = 1; // hardcoded, doesn't feel right???
                 loc += 2;
                 break;
             case OUT:
                 output = determineVal(Number(inst[2]), loc+1);
-                console.log("OUTPUT: " + output);
                 loc += 2;
                 break;
             default:
