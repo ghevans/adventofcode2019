@@ -7,6 +7,10 @@ const ADD = 1;
 const MULT = 2;
 const IN = 3;
 const OUT = 4;
+const JIT = 5;
+const JIF = 6;
+const LT = 7;
+const EQ = 8;
 
 const POSITION = 0;
 const IMMEDIATE = 1;
@@ -22,7 +26,7 @@ function determineVal(mode, loc) {
     } 
 }
 
-function part1() {
+function runProgram(input) {
     let loc = 0, output = 0;
     while (program[loc] != END) {
         let inst = program[loc].toString().padStart(5, '0'); // always pad for safety, even if no use
@@ -40,12 +44,30 @@ function part1() {
                 loc += 4;
                 break;
             case IN:
-                program[program[loc+1]] = 1; // hardcoded, doesn't feel right???
+                program[program[loc+1]] = input; // hardcoded, doesn't feel right???
                 loc += 2;
                 break;
             case OUT:
                 output = determineVal(Number(inst[2]), loc+1);
                 loc += 2;
+                break;
+            case JIT:
+                if (left !== 0) {
+                    loc = right;
+                }
+                break;
+            case JIF:
+                if (left === 0) {
+                    loc = right;
+                }
+                break;
+            case LT:
+                program[dest] = (left < right) ? 1 : 0;
+                loc += 4;
+                break;
+            case EQ:
+                program[dest] = (left === right) ? 1 : 0;
+                loc += 4;
                 break;
             default:
                 console.log("ERROR: " + opCode);
@@ -56,8 +78,12 @@ function part1() {
     return output;
 }
 
+function part1(input) {
+    return runProgram(1);
+}
+
 function part2(input) {
-    return "tbd";
+    return runProgram(5);
 }
 
 console.log("Part 1 - " + part1());
