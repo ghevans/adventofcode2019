@@ -1,7 +1,6 @@
 const _ = require('lodash');
 const program = require('./input');
-// const program = ['1002','4','3','4','33'];
-
+// const program = "3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9".split(',').map(n => Number(n));
 const END = 99;
 const ADD = 1;
 const MULT = 2;
@@ -44,7 +43,7 @@ function runProgram(input) {
                 loc += 4;
                 break;
             case IN:
-                program[program[loc+1]] = input; // hardcoded, doesn't feel right???
+                program[program[loc+1]] = input;
                 loc += 2;
                 break;
             case OUT:
@@ -54,11 +53,15 @@ function runProgram(input) {
             case JIT:
                 if (left !== 0) {
                     loc = right;
+                } else {
+                    loc += 3;
                 }
                 break;
             case JIF:
                 if (left === 0) {
                     loc = right;
+                } else {
+                    loc += 3;
                 }
                 break;
             case LT:
@@ -86,5 +89,5 @@ function part2(input) {
     return runProgram(5);
 }
 
-console.log("Part 1 - " + part1());
-// console.log("Part 2 - " + part2(input));
+// console.log("Part 1 - " + part1());
+console.log("Part 2 - " + part2());
