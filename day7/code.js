@@ -9,10 +9,7 @@ function part1(program) {
     let numAmps = 5;
     let output = { max: Number.MIN_SAFE_INTEGER, phase: ""};
 
-    let input = 0;
     let min = "01234", max = "43210";
-    let phase = "01234";
-    // iterate here through possible phase values...but how???
     for(let i = Number(min); i <= (max); i++) {
         let phase = i.toString().padStart(5, '0');
         if (valid(phase)) {

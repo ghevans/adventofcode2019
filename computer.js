@@ -21,8 +21,8 @@ function determineVal(program, mode, loc) {
     } 
 }
 
-function runProgram(program, input) {
-    let loc = 0, output = 0;
+function runProgram(program, phase, input) {
+    let loc = 0, output = 0, firstInput = true;
     while (program[loc] != END) {
         let inst = program[loc].toString().padStart(5, '0');
         let opCode = Number(inst.slice(3));
@@ -39,7 +39,8 @@ function runProgram(program, input) {
                 loc += 4;
                 break;
             case IN:
-                program[program[loc+1]] = input;
+                program[program[loc+1]] = (firstInput) ? phase : input;
+                firstInput = false;
                 loc += 2;
                 break;
             case OUT:
