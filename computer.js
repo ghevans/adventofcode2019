@@ -24,7 +24,7 @@ function determineVal(program, mode, loc) {
 function runProgram(program, input) {
     let loc = 0, output = 0;
     while (program[loc] != END) {
-        let inst = program[loc].toString().padStart(5, '0'); // always pad for safety, even if no use
+        let inst = program[loc].toString().padStart(5, '0');
         let opCode = Number(inst.slice(3));
         let left = determineVal(program, Number(inst[2]), loc + 1);
         let right = determineVal(program, Number(inst[1]), loc + 2);
