@@ -28,9 +28,7 @@ function part2(input, w, t) {
     for (let i = 0; i < numLayers; i++) {
         let l = input.substring(i*w*t, (1+i)*w*t);
         layers.push({
-            layer: _.chunk(l, w),
-            zeros: findBy(l, '0'),
-            mult: findBy(l, '1') * findBy(l, '2')
+            layer: _.chunk(l, w)
         });
     }
 
@@ -44,6 +42,11 @@ function part2(input, w, t) {
             }
         }
     }
+    
+    return print(output, w, t);
+}
+
+function print(output, w, t) {
     let out = '';
     for (let i = 0; i < t; i++) {
         let row = '';
@@ -52,7 +55,6 @@ function part2(input, w, t) {
         }
         out += row + '\n';
     }
-    
     return out;
 }
 
