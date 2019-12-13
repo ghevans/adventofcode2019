@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const computer = require('../computer');
-const generator = require('../genTest');
 const program = require('./input');
 
 const test = "3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0".split(',').map(Number);
@@ -68,7 +67,7 @@ function checkPhase(program, phase) {
     let phases = phase.split('').map(Number);
     for (let i = 0; i < phases.length; i++) {
         const inputForAmp =  (i === 0) ? startInputGenerator(phases[i]) : inputGenerator(phases[i], lastAmp);
-        lastAmp = generator(program, inputForAmp);
+        lastAmp = computer(program, inputForAmp);
     }
 
     for(let value of lastAmp) {
