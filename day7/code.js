@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const computer = require('../computer');
-const input = require('./input');
+const generator = require('../genTest');
+const program = require('./input');
 
 const test = "3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0".split(',').map(Number);
 const test2 = "3,23,3,24,1002,24,10,24,1002,23,-1,23,101,5,23,23,1,24,23,23,4,23,99,0,0".split(',').map(Number);
@@ -28,54 +29,54 @@ function valid(num, expected) {
     return (num.split('').sort().join('') === expected);
 }
 
-function part2(program) {
-    let numAmps = 5;
-    // let output = { max: Number.MIN_SAFE_INTEGER, phase: ""};
+// ====== PART 2 ==========
 
-
-    let amps = [ _.clone(program), _.clone(program), _.clone(program), _.clone(program), _.clone(program)];
-  
-
-    // this is the inital loop
-    let val = "98765";
-    console.log(`${amps[0]}`);
-
-    let output = computer(amps[0], Number(val[0]), 0);
-    let lastOutput = output;
-        for(let i = 1; i < amps.length; i++) {
-            output = computer(amps[i], Number(val[i]), output);
-            console.log(`output => ${output}`);
-        }
-
-    // forever loop
+let inputVal;
+function* startInputGenerator(phase) {
+    yield phase;
     while (true) {
-        for(let i = 0; i < amps.length; i++) {
-            console.log(`${amps[i]}\n${output}`);
-            output = computer(amps[i], output, output);
-            console.log(`output => ${output}`);
-        }
-        if (lastOutput < output) {
-            lastOutput = output;
-        } else {
-            return lastOutput;
+        yield inputVal;
+    }
+}
+
+function* inputGenerator(phase, previousAmp) {
+    yield phase;
+    while (true) {
+        yield previousAmp.next().value;
+    }
+}
+
+function part2(program) {
+    let maxAmps = 0;
+
+    let min = "56789", max = "98765";
+    for(let i = Number(min); i <= (max); i++) {
+        let phase = i.toString().padStart(5, '0');
+        if (valid(phase, min)) {
+            let output = checkPhase(program, phase);
+            maxAmps = (maxAmps < output) ? output : maxAmps;
         }
     }
 
-
-    // console.log(amps);
-    // let min = "56789", max = "98765";
-    // for(let i = Number(min); i <= (max); i++) {
-    //     let phase = i.toString();
-    //     if (valid(phase, min)) {
-    //         let input = 0;
-            // for (let j = 0; j < numAmps; j++) {
-            //     input = computer(, Number(phase[j]), input);
-            // }
-            // output = (input > output.max) ? { max: input, phase: phase } : output;
-    //     }
-    // }
-    // return `${JSON.stringify(output)}`;
+    return maxAmps;
 }
 
-// console.log("Part 1 - " + part1(input));
-console.log("Part 2 - " + part2(test3));
+function checkPhase(program, phase) {
+    inputVal = 0;
+    let lastAmp;
+
+    let phases = phase.split('').map(Number);
+    for (let i = 0; i < phases.length; i++) {
+        const inputForAmp =  (i === 0) ? startInputGenerator(phases[i]) : inputGenerator(phases[i], lastAmp);
+        lastAmp = generator(program, inputForAmp);
+    }
+
+    for(let value of lastAmp) {
+        inputVal = value;
+    }
+
+    return inputVal;
+}
+
+console.log("Part 1 - " + part1(program));
+console.log("Part 2 - " + part2(program));
