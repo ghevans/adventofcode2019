@@ -31,68 +31,72 @@ function determineVal(program, mode, loc, offset) {
     } 
 }
 
-// function getInst(program, loc) {
-//     const inst = program[loc].toString().padStart(5, '0');
-//     return {
-//         opCode: Number(inst.slice(3)),
-//         modes: [
-//             Number(inst[2]),
-//             Number(inst[1]),
-//             Number(inst[0])
-//         ]
-//     }
-// }
+function getInst(program, loc) {
+    const inst = program[loc].toString().padStart(5, '0');
+    return {
+        opCode: Number(inst.slice(3)),
+        modes: [
+            Number(inst[2]),
+            Number(inst[1]),
+            Number(inst[0])
+        ]
+    }
+}
 
-// function getVal(program, loc, mode, offset) {
-//     switch (mode) { 
-//         case POSITION:
-//             while (program[program[loc]] === undefined) {
-//                 program.push(0);
-//             }
-//             return program[program[loc]]
-//         case IMMEDIATE:
-//             return program[loc];
-//         case RELATIVE:
-//             while (program[program[loc]+offset] === undefined) {
-//                 program.push(0);
-//             }
-//             return program[program[loc]+offset];
-//         default:
-//             console.log("Unknown mode: " + mode);
-//     }
-// }
+function getVal(program, loc, mode, offset) {
+    switch (mode) { 
+        case POSITION:
+            while (program[program[loc]] === undefined) {
+                program.push(0);
+            }
+            return program[program[loc]]
+        case IMMEDIATE:
+            return program[loc];
+        case RELATIVE:
+            while (program[program[loc]+offset] === undefined) {
+                program.push(0);
+            }
+            return program[program[loc]+offset];
+        default:
+            console.log("Unknown mode: " + mode);
+    }
+}
 
-// function putVal(program, loc, mode, offset, value) {
-
-// }
+function putVal(program, loc, mode, offset, value) {
+    switch (mode) { 
+        case POSITION:
+            program[program[loc]] = value;
+            return;
+        case RELATIVE:
+            program[program[loc]+offset] = value;
+            return;
+        default:
+            console.log("Unknown mode: " + mode);
+    }
+}
 
 // console.log(getInst([203],0))
 
 function* runProgram(program, input) {
     let loc = 0, output = 0, offset = 0;
     while (program[loc] != END) {
-        // let inst = getInst(program, loc);
+        let inst = getInst(program, loc);
 
+        let left = getVal(program, loc+1, inst.modes[0], offset);
+        let right = getVal(program, loc+2, inst.modes[1], offset);
 
-        let inst = program[loc].toString().padStart(5, '0');
-        let opCode = Number(inst.slice(3));
-        let left = determineVal(program, Number(inst[2]), loc + 1, offset);
-        let right = determineVal(program, Number(inst[1]), loc + 2, offset);
         let dest = program[loc+3];
-        switch (opCode) {
+        switch (inst.opCode) {
             case ADD:
-                // let l = getVal(program, loc+1, inst.modes[0], offset);
-                // let r = getVal(program, loc+2, inst.modes[1], offset);
-                // putVal(program, loc+3, inst.modes[2], offset, (l + r));
-                program[dest] = left + right;
+                putVal(program, loc+3, inst.modes[2], offset, (left + right));
                 loc += 4;
                 break;
             case MULT:
-                program[dest] = left * right;
+                putVal(program, loc+3, inst.modes[2], offset, (left * right));
                 loc += 4;
                 break;
             case IN:
-                switch(Number(inst[2])) {
+                switch(inst.modes[0]) {
                     case POSITION:
                         program[program[loc+1]] = input.next().value;
                         break;
@@ -100,10 +104,11 @@ function* runProgram(program, input) {
                         program[program[loc+1] + offset] = input.next().value;
                         break;
                 }
+                // putVal(program, loc+1, inst.modes[0], offset, input.next.value);
                 loc += 2;
                 break;
             case OUT:
-                yield determineVal(program, Number(inst[2]), loc+1, offset);
+                yield determineVal(program, inst.modes[0], loc+1, offset);
                 loc += 2;
                 break;
             case JIT:
@@ -113,11 +118,11 @@ function* runProgram(program, input) {
                 loc = (left === 0) ? right : loc + 3;
                 break;
             case LT:
-                program[dest] = (left < right) ? 1 : 0;
+                putVal(program, loc+3, inst.modes[2],offset, (left < right) ? 1 : 0);
                 loc += 4;
                 break;
             case EQ:
-                program[dest] = (left === right) ? 1 : 0;
+                putVal(program, loc+3, inst.modes[2],offset, (left === right) ? 1 : 0);
                 loc += 4;
                 break;
             case RBO:

@@ -14,11 +14,14 @@ function* inputGen(start) {
 
 function runTest(val) {
     const boost = computer(program, inputGen(val));
+    let output = 0;
     for(let value of boost) {
-        console.log(value);
+        output = value;
+        // console.log(value);
     }
+    return output;
 }
 
 
 console.log("Part 1 - " + runTest(1));
-// console.log("Part 2 - " + runTest(2));
+console.log("Part 2 - " + runTest(2));
