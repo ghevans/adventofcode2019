@@ -30,75 +30,110 @@ const part2test = `.#..##.###...#######
 ###.##.####.##.#..##`.split('\n')
 .map(l => l.split(''));
 
-function buildMap(input) {
-    let map = {};
-    _(input).forEach((line, y) => {
-        _(line).forEach((val, x) => {
-            if (val === '#') {
-                map[`${x},${y}`] = { x: x, y: y};
-            }
-        })
-    })
-    return map;
-}
-
-function detect(map, astr) {
-    let angleMap = {};
-    _(map).filter(o => `${o.x},${o.y}` !==`${astr.x},${astr.y}`)
-        .forEach(o => {
-            let angle = Math.atan2(astr.y - o.y, o.x - astr.x) * 180 / Math.PI;
-            if (angleMap[angle] === undefined) {
-                angleMap[angle] = `${o.x},${o.y}`;
-            }
-        });
-
-    return angleMap;
-}
-
 function part1(input) {
-    let map = buildMap(input);
-    let maxSeen = { seen: 0};
-    _(map).forEach(astr => {
-        let seen = Object.keys(detect(map, astr)).length;
-        if (seen > maxSeen.seen) {
-            maxSeen = {
-                astr: astr,
-                seen: seen
-            }
-        }
-    })
-    return maxSeen;
+    let astrMap = parseMap(input);
+    let detected = astrMap.map(astr => detect(astrMap, astr));
+
+    let mostSeen = detected.sort((a, b) => {
+        return b.detected.length - a.detected.length;
+    })[0];
+
+    return { astrMap, detected: mostSeen.detected, laser: mostSeen };
 }
 
 function part2(input) {
-    let map = buildMap(input);
-    let laser = part1(input).astr;
-    delete map[`${laser.x},${laser.y}`];
+    let laser = part1(input).laser;
+    let uniqAngles = Array.from(new Set(laser.beams.map(b => b.angle)))
+        .sort((a, b) => {
+            const aa = (a + 360 - 90.001) % 360;
+            const ab = (b + 360 - 90.001) % 360;
+            return ab - aa
+        });
 
     let vaporized = [];
-    console.log(laser);
-    console.log(map);
-    let detected = detect(map, laser);
-    console.log(detected);
-    
-    let start = 90;
-    for (let i = 0; i < 360 ; i++) {
-        if (start - i < 0) {
-            if (detected[`${360 + (start - i)}`]) {
-                vaporized.push(`${detected[`${360 + (start - i)}`]}`);
-                delete map[`${detected[`${360 + (start - i)}`]}`];
-            }
-        } else {
-            if (detected[`${start - i}`]) {
-                vaporized.push(`${detected[`${start - i}`]}`);
-                delete map[`${detected[`${start - i}`]}`];
-            }
+    while (vaporized.length < 200) {
+        let i = vaporized.length;
+        let curAngle = uniqAngles[i % uniqAngles.length];
+
+        let nextAsteroid = [].concat(laser.beams)
+            .filter(b => b.angle === curAngle)
+            .filter(astr => !astr.vaporized)
+            .sort((a,b) => {
+                a.dist - b.dist;
+            });
+            
+        if(nextAsteroid[nextAsteroid.length -1] !== undefined) {
+            let shoot = nextAsteroid[nextAsteroid.length -1];
+            shoot.vaporized = true;
+            vaporized.push(shoot);
+            // console.log(`Vaporized [${vaporized.length}]: ${shoot.x},${shoot.y} angle ${shoot.angle}`);
         }
     }
-    console.log(vaporized);
-    console.log(map);
-    return 1;
+    let lastAstr = vaporized[vaporized.length-1];
+    return (lastAstr.x * 100) + lastAstr.y;
 }
 
-// console.log("Part 1 - " + JSON.stringify(part1(input)));
-console.log("Part 2 - " + JSON.stringify(part2(small)));
+function parseMap(input) {
+    const asteroids = [];
+    _(input).forEach((line, y) => {
+        _(line).forEach((val, x) => {
+            if (val === '#') {
+                asteroids.push({
+                    x: x,
+                    y: y
+                });
+            }
+        })
+    })
+    return asteroids;
+}
+
+function detect(asteroids, laser) {
+    const others = [].concat(asteroids).filter(astr => !(astr.x === laser.x && astr.y === laser.y));
+
+    const beams = others.map(astr => {
+        return {
+            x: astr.x,
+            y: astr.y,
+            dist: Math.sqrt(Math.pow(laser.x - astr.x, 2) + Math.pow(astr.y - laser.y, 2)),
+            angle: Math.atan2(laser.y - astr.y, astr.x - laser.x) * 180 / Math.PI
+        }
+    });
+
+    const detected = Array.from(new Set(beams.map(b => b.angle))).map(angle => {
+        const shared = [].concat(beams)
+            .filter(astr => astr.angle === angle)
+            .sort((a, b) => {
+                return a.dist - b.dist
+            });
+        return shared[0];
+    })
+
+    laser.beams = beams;
+    laser.detected = detected;
+    return laser;
+}
+
+const test2 = `.#..##.###...#######
+##.############..##.
+.#.######.########.#
+.###.#######.####.#.
+#####.##.#.##.###.##
+..#####..#.#########
+####################
+#.####....###.#.#.##
+##.#################
+#####.##.###..####..
+..######..##.#######
+####.##.####...##..#
+.#####..#.######.###
+##...#.##########...
+#.##########.#######
+.####.#.###.###.#.##
+....##.##.###..#####
+.#.#.###########.###
+#.#.#.#####.####.###
+###.##.####.##.#..##`.split('\n')
+.map(l => l.split(''));
+console.log("Part 1 - " + part1(input).detected.length);
+console.log("Part 2 - " + JSON.stringify(part2(input)));
