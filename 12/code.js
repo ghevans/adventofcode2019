@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const lcm = require('compute-lcm');
 const moons = require('./input');
 
 // let moons = `-1,0,2
@@ -58,10 +59,58 @@ function updatePositions() {
     }
 }
 
-function part2(input) {
-    return "tbd";
+function part2() {
+    let xMap = new Map();
+    let xState = new State(moons[0].x, moons[1].x, moons[2].x, moons[3].x, moons[0].vx, moons[1].vx, moons[2].vx, moons[3].vx);
+    do {
+        // Add State to Map, increment xSteps
+        xMap.set(xState.key, xState);
+        
+        updateVelocity();
+        updatePositions();
+
+        xState = new State(moons[0].x, moons[1].x, moons[2].x, moons[3].x, moons[0].vx, moons[1].vx, moons[2].vx, moons[3].vx);
+    } while (xMap.get(xState.key) === undefined);
+
+    let yMap = new Map();
+    let yState = new State(moons[0].y, moons[1].y, moons[2].y, moons[3].y, moons[0].vy, moons[1].vy, moons[2].vy, moons[3].vy);
+    do {
+        // Add State to Map, increment xSteps
+        yMap.set(yState.key, yState);
+        
+        updateVelocity();
+        updatePositions();
+
+        yState = new State(moons[0].y, moons[1].y, moons[2].y, moons[3].y, moons[0].vy, moons[1].vy, moons[2].vy, moons[3].vy);
+    } while (yMap.get(yState.key) === undefined);
+
+    let zMap = new Map();
+    let zState = new State(moons[0].z, moons[1].z, moons[2].z, moons[3].z, moons[0].vz, moons[1].vz, moons[2].vz, moons[3].vz);
+    do {
+        // Add State to Map, increment xSteps
+        zMap.set(zState.key, zState);
+        
+        updateVelocity();
+        updatePositions();
+
+        zState = new State(moons[0].z, moons[1].z, moons[2].z, moons[3].z, moons[0].vz, moons[1].vz, moons[2].vz, moons[3].vz);
+    } while (zMap.get(zState.key) === undefined);
+
+    return lcm(xMap.size, yMap.size, zMap.size);
+}
+
+function State(pos1, pos2, pos3, pos4, vel1, vel2, vel3, vel4) {
+    this.pos1 = pos1;
+    this.pos2 = pos2;
+    this.pos3 = pos3;
+    this.pos4 = pos4;
+    this.vel1 = vel1;
+    this.vel2 = vel2;
+    this.vel3 = vel3;
+    this.vel4 = vel4;
+    this.key = `${pos1},${pos2},${pos3},${pos4},${vel1},${vel2},${vel3},${vel4}`;
 }
 
 
 console.log("Part 1 - " + part1(1000));
-// console.log("Part 2 - " + part2());
+console.log("Part 2 - " + part2());
