@@ -2,8 +2,8 @@ const _ = require('lodash');
 const input = require('./input');
 const computer = require('../computer');
 
-
 const black = 0;
+const white = 1;
 const UP    = 'U';
 const DOWN  = 'D';
 const LEFT  = 'L';
@@ -69,30 +69,24 @@ function part1(program) {
 }
 
 function part2(input) {
+    ship.clear();
     ship.set('0,0', 1); // initialize
     part1(input);
+    
+    return print(ship);
 }
 
-function print(arr) {
+function print(ship) {
     let out = "";
-    let numPainted = 0;
-
-    for(let y = 0; y < arr.length; y++) {
+    for(let y = 0; y <= 5; y++) {
         let row = "";
-        for(let x = 0; x <arr[y].length; x++) {
-            if (arr[y][x]) {
-                numPainted++;
-                row += '#';
-            } else {
-                row += ' ';
-            }
-            // row += (arr[y][x]) ? '#' : ' '
+        for(let x = 0; x >= -41; x--) {
+            row += (ship.get(`${x},${y}`) && ship.get(`${x},${y}`) === white) ? '█' : ' ';
         }
         out += row + '\n'
     }
-    console.log(out);
-    return numPainted
+    return out;
 }
 
 // console.log("Part 1 - " + part1(input).size);
-console.log("Part 2 - " + part2(input));
+console.log("Part 2 - \n" + part2(input));
