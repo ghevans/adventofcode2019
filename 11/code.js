@@ -4,20 +4,19 @@ const computer = require('../computer');
 
 
 const black = 0;
-const white = 1;
 const UP    = 'U';
 const DOWN  = 'D';
 const LEFT  = 'L';
 const RIGHT = 'R';
 
-let ship = {};
+let ship = new Map();
 let currentX = 0;
 let currentY = 0;
 let currentDir = UP;
 
-function* inputGen(start) {
+function* inputGen() {
     while(true) {
-        yield ship[`${currentX},${currentY}`] || black;
+        yield ship.get(`${currentX},${currentY}`) || black;
     }
 }
 
@@ -37,10 +36,10 @@ function turnRobot(direction) {
 function moveRobot() {
     switch(currentDir) {
         case UP:
-            currentY += 1;
+            currentY -= 1;
             break;
         case DOWN:
-            currentY -= 1;
+            currentY += 1;
             break;
         case LEFT:
             currentX -= 1;
@@ -52,39 +51,48 @@ function moveRobot() {
 }
 
 function part1(program) {
-    let robot = computer(program, inputGen(0));
-
-    // need to run computer twice to get both outputs, then change the input;
-
-    // initilize robot at 0,0 with 0 input
-    // run 
-    // get output (color to paint)
-    // get output (direction to turn)
+    let robot = computer(program, inputGen());
+    
     let done = false;
     while(!done) {
         let color = robot.next();
         let movement = robot.next();
-        // console.log(`panel is color ${color.value} and moving ${movement.value}`);
-        ship[`${currentX},${currentY}`] = color.value;
 
-        // console.log('robot turned from ' + currentDir);
+        ship.set(`${currentX},${currentY}`, color.value);
         currentDir = turnRobot(movement.value);
-        // console.log('to ' + currentDir);
-
         moveRobot();
-        // console.log(`now located at ${currentX},${currentY}`);
 
         done = movement.done;
     }
 
-    console.log(ship);
-
-    return "tbd";
+    return ship;
 }
 
 function part2(input) {
-    return "tbd";
+    ship.set('0,0', 1); // initialize
+    part1(input);
 }
 
-console.log("Part 1 - " + part1(input));
-// console.log("Part 2 - " + part2(input));
+function print(arr) {
+    let out = "";
+    let numPainted = 0;
+
+    for(let y = 0; y < arr.length; y++) {
+        let row = "";
+        for(let x = 0; x <arr[y].length; x++) {
+            if (arr[y][x]) {
+                numPainted++;
+                row += '#';
+            } else {
+                row += ' ';
+            }
+            // row += (arr[y][x]) ? '#' : ' '
+        }
+        out += row + '\n'
+    }
+    console.log(out);
+    return numPainted
+}
+
+// console.log("Part 1 - " + part1(input).size);
+console.log("Part 2 - " + part2(input));
