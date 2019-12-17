@@ -5,8 +5,6 @@ const program = require('./input');
 const {promisify} = require('util');
 const sleep = promisify(setTimeout);
 
-
-
 let EMPTY   = 0;
 let WALL    = 1;
 let BLOCK   = 2;
