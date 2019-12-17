@@ -72,14 +72,15 @@ function* inputGen() {
         yield (ballX > paddleX) ? 1 : (ballX === paddleX) ? 0 : -1;
     }
 }
-async function part2() {
+
+function part2() {
     program[0] = 2;
 
     let game = computer(program, inputGen());
 
     let done = false;
     let score = 0;
-    let t = sleep(100);
+    // let t = sleep(100);
     while(!done) {
         let x = game.next().value;
         let y = game.next().value;
@@ -93,9 +94,9 @@ async function part2() {
             switch (type.value) {
                 case BALL:
                     ballX = x;
-                    await t;
-                    t=sleep(100);
-                    console.log(print(score));
+                    // await t;
+                    // t=sleep(100);
+                    // console.log(print(score));
                     break;
                 case PADDLE:
                     paddleX = x;
@@ -109,5 +110,5 @@ async function part2() {
 
 }
 
-// console.log("Part 1 - " + part1());
-part2();
+console.log("Part 1 - " + part1());
+console.log("Part 2 - " + part2());
