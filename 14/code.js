@@ -47,9 +47,17 @@ function part1() {
     return convert({}, 'FUEL', 1);
 }
 
-function part2(input) {
-    return "tbd";
+function part2() {
+    let trill = 1000000000000;
+    let fuel = 3445240, oreNeeded = 0;
+    while(oreNeeded <= trill) {
+        fuel++;
+        oreNeeded = convert({}, 'FUEL', fuel);
+        // console.log(`Created ${fuel} out of ${oreNeeded} ore`)
+    }
+
+    return fuel -1;
 }
 
-console.log("Part 1 - " + part1());
-// console.log("Part 2 - " + part2(input));
+// console.log("Part 1 - " + part1());
+console.log("Part 2 - " + part2());
