@@ -15,6 +15,14 @@ function part2(input) {
     return s1*s2*s3*s4*s5;
 }
 
+function countTrees(input, down, right) {
+    let trees = 0;
+    for (let i = 0; i < input.length; i+=down) {
+        trees += (input[i].charAt((i*right) % input[i].length) === '#') ? 1 : 0;
+    }
+    return trees;
+}
+
 function countTrees2(input,down,right) {
     let trees = 0, depth = 0; i = 0, rowLength = input[0].length;
     while (depth <= input.length) {
@@ -25,12 +33,5 @@ function countTrees2(input,down,right) {
     return trees;
 }
 
-function countTrees(input, down, right) {
-    let trees = 0;
-    for (let i = 0; i < input.length; i+=down) {
-        trees += (input[i].charAt((i*right) % input[i].length) === '#') ? 1 : 0;
-    }
-    return trees;
-}
 console.log("Part 1 - " + part1(input));
 console.log("Part 2 - " + part2(input));
