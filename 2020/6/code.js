@@ -8,7 +8,7 @@ function part1(input) {
 function part2(input) {
     let sum = 0;
     _.forEach(input, group => {
-        _.forEach(group.members, ans => sum += (ans === group.size) ? 1 : 0)
+        _.forEach(group.members, ans => sum += (ans === group.size) ? 1 : 0);
     })
     return sum;
 }
