@@ -58,13 +58,9 @@ function part2(program, visited) {
 }
 
 function findOptions(program, visited){ 
-    let options = [];
-    for(id of visited) {
-        if (['nop','jmp'].includes(program[id].op)) {
-            options.push(id);
-        }
-    }
-    return options;
+    return program.filter(oper =>  visited.includes(oper.id))
+                  .filter(oper => ['nop','jmp'].includes(oper.op))
+                  .map(oper => oper.id);
 }
 
 let {acc, visited} = part1(input);
