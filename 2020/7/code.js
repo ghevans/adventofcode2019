@@ -45,9 +45,7 @@ function findBags(rules, bag) {
 }
 
 function part2(input, bag) {
-    let root = getRule(input, bag);
-    let totalBags = sumChildren(input, root.holds) -1;
-    return totalBags;
+    return sumChildren(input, getRule(input, bag).holds) -1;
 }
 
 function sumChildren(rules, children) {
