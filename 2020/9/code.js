@@ -4,18 +4,15 @@ const input = require('./input');
 function part1(code, length) {
     for(let i = length; i < code.length; i++) {
         let group = code.slice(i - length, i); 
-        if (!getPossibleSums(group).includes(code[i])) {
+        if (!canSum(group, code[i])) {
             return code[i];
         }
     }
     console.log('ut oh');
 }
 
-function getPossibleSums(group) {
-    const validSums = group.flatMap(
-        (v, i) => group.slice(i+1).map( w => v + w )
-    );
-    return validSums;
+function canSum(group, current) {
+    return group.flatMap((val, index) => group.slice(index+1).map(next => val + next )).includes(current);
 }
 
 function part2(code, invalidNum) {
