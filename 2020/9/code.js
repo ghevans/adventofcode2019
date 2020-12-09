@@ -12,7 +12,7 @@ function part1(code, length) {
 }
 
 function canSum(group, current) {
-    return group.flatMap((val, index) => group.slice(index+1).map(next => val + next )).includes(current);
+    return group.flatMap((val, index) => group.slice(index+1).map(next => val + next)).includes(current);
 }
 
 function part2(code, invalidNum) {
