@@ -30,10 +30,9 @@ function part2(input) {
     let pathsByIndex = [1];
 
     for (let i = 1; i < sorted.length; i++) {
-        let start = (i-3 >= 0) ? i-3 : 0;
         pathsByIndex.push(0);
 
-        sorted.slice(start,i)
+        sorted.slice(((i-3 >= 0) ? i-3 : 0),i)
               .filter(jolt => (jolt + 3 >= sorted[i]))
               .map(jolt => pathsByIndex[i] += pathsByIndex[sorted.indexOf(jolt)]);
     }
