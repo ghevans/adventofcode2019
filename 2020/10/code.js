@@ -33,14 +33,12 @@ function part2(input) {
     let pathsByIndex = Array(sorted.length).fill(0);
     pathsByIndex[0] = 1; // always 1 path starting from 0
 
-    for (let i = 0; i < sorted.length; i++) {
-        for (let j = 1; j <= 3; j++) {
-            if (sorted[i-j] + 3 >= sorted[i]) {
-                // console.log(`able to move from ${sorted[i-j]} => ${sorted[i]}`)
-                // console.log(`adding ${pathsByIndex[i-j]} to ${pathsByIndex[i]}`)
-                pathsByIndex[i] += pathsByIndex[i-j];
-            }
-        }
+    for (let i = 1; i < sorted.length; i++) {
+        let start = (i-3 >= 0) ? i-3 : 0;
+
+        sorted.slice(start,i).forEach(jolt => {
+            pathsByIndex[i] += (jolt + 3 >= sorted[i]) ? pathsByIndex[sorted.indexOf(jolt)] : 0;
+        })
     }
 
     return pathsByIndex[sorted.length - 1];
