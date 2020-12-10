@@ -36,7 +36,7 @@ function part2(input) {
     for (let i = 0; i < sorted.length; i++) {
         for (let j = 1; j <= 3; j++) {
             if (sorted[i-j] + 3 >= sorted[i]) {
-                // console.log(`able to move from ${sorted[i]} => ${sorted[i-j]}`)
+                // console.log(`able to move from ${sorted[i-j]} => ${sorted[i]}`)
                 // console.log(`adding ${pathsByIndex[i-j]} to ${pathsByIndex[i]}`)
                 pathsByIndex[i] += pathsByIndex[i-j];
             }
@@ -46,6 +46,5 @@ function part2(input) {
     return pathsByIndex[sorted.length - 1];
 }
 
-// can't run back to back bc the array gets manipulated
-// console.log("Part 1 - " + part1(input));
-console.log("Part 2 - " + part2(input));
+console.log("Part 1 - " + part1(_.cloneDeep(input)));
+console.log("Part 2 - " + part2(_.cloneDeep(input)));
