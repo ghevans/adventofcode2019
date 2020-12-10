@@ -36,9 +36,9 @@ function part2(input) {
     for (let i = 1; i < sorted.length; i++) {
         let start = (i-3 >= 0) ? i-3 : 0;
 
-        sorted.slice(start,i).forEach(jolt => {
-            pathsByIndex[i] += (jolt + 3 >= sorted[i]) ? pathsByIndex[sorted.indexOf(jolt)] : 0;
-        })
+        sorted.slice(start,i)
+              .filter(jolt => (jolt + 3 >= sorted[i]))
+              .map(jolt => pathsByIndex[i] += pathsByIndex[sorted.indexOf(jolt)]);
     }
 
     return pathsByIndex[sorted.length - 1];
