@@ -12,12 +12,12 @@ function part2(input) {
 function runSim(input, tolerance, part2) {
     let prevSeatMap = input;
     while (true) {
-        let curSeatMap = doRound(prevSeatMap, tolerance, part2);
-        
-        if (noChanges(prevSeatMap, curSeatMap)) {
-            return curSeatMap.flat().filter(s => s === '#').length;
+        let newSeatMap = doRound(prevSeatMap, tolerance, part2);
+
+        if (noChanges(prevSeatMap, newSeatMap)) {
+            return newSeatMap.flat().filter(s => s === '#').length;
         }
-        prevSeatMap = curSeatMap;
+        prevSeatMap = newSeatMap;
     }
 }
 
