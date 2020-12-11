@@ -86,14 +86,11 @@ function getFirstVisible(seatMap, startX, startY) {
     for (slope of slopes) {
         let i = 1;
         while (true) {
-            let row = seatMap[startY+(slope[0]*i)];
-            if (row === undefined) { break; }
-            
-            let pos = row[startX+(slope[1]*i)];
-            if (pos === undefined) { break; }
+            let loc = seatMap?.[startY+(slope[0]*i)]?.[startX+(slope[1]*i)];
+            if (loc === undefined) { break; }
 
-            if (pos !== '.') { 
-                out.push(pos);
+            if (loc !== '.') { 
+                out.push(loc);
                 break;
             }
             i++;
