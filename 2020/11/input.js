@@ -103,14 +103,4 @@ LLLLLLLLLL
 L.LLLLLL.L
 L.LLLLL.LL`;
 
-module.exports = input.split('\n')
-                     .flatMap((row, yId) => {
-                        return row.split('')
-                           .map((loc, xId) => {
-                                return {
-                                    x: xId,
-                                    y: yId,
-                                    val: loc
-                                }
-                            });
-                    });
+module.exports = input.split('\n').map((row) => row.split(''));

@@ -3,29 +3,24 @@ const input = require('./input');
 
 function part1(input) {
     let prevSeatMap = input;
-    let maxX = _.maxBy(prevSeatMap, 'x').x;
-    let maxY = _.maxBy(prevSeatMap, 'y').y;
-
     let i = 0;
     while (true) {
-        let curSeatMap = doRound(prevSeatMap, maxX, maxY);
+        let curSeatMap = doRound(prevSeatMap);
         
-        // print(curSeatMap, maxX, maxY, i+1);
-        // console.log(i+1)
-        if (noChanges(prevSeatMap, curSeatMap, maxX, maxY)) {
-            // console.log(`Stabilized after ${i+1} rounds`)
-            return curSeatMap.filter(s => s.val === '#').length;
+        // print(curSeatMap, i+1);
+        if (noChanges(prevSeatMap, curSeatMap)) {
+            return curSeatMap.flat().filter(s => s === '#').length;
         }
         prevSeatMap = curSeatMap;
         i++;
     }
 }
 
-function noChanges(prevSeatMap, curSeatMap, maxX, maxY) {
-    for(let y = 0; y <= maxY; y++) {
-        for (let x = 0; x <= maxX; x++) {
-            let prevSeat = prevSeatMap.filter(seat => seat.x === x && seat.y === y)[0].val;
-            let curSeat = curSeatMap.filter(seat => seat.x === x && seat.y === y)[0].val;
+function noChanges(prevSeatMap, curSeatMap) {
+    for(let y = 0; y < prevSeatMap.length; y++) {
+        for (let x = 0; x < prevSeatMap[0].length; x++) {
+            let prevSeat = prevSeatMap[y][x];
+            let curSeat = curSeatMap[y][x];
             if (prevSeat !== curSeat) {
                 return false;
             }
@@ -34,30 +29,29 @@ function noChanges(prevSeatMap, curSeatMap, maxX, maxY) {
     return true;
 }
 
-function doRound(seatMap, maxX, maxY) {
+function doRound(seatMap) {
     let newSeatMap = [];
 
-    for(let y = 0; y <= maxY; y++) {
-        for (let x = 0; x <= maxX; x++) {
-            let seat = seatMap.filter(seat => seat.x === x && seat.y === y)[0];
-            let nearby = getNearby(seatMap, x, y).filter(s => s !== seat);
-            let occupied = nearby.filter(s => s.val === '#');
-            // console.log(`numOccupied: ${occupied.length}`)
+    for(let y = 0; y < seatMap.length; y++) {
+        let row = [];
+        for (let x = 0; x < seatMap[0].length; x++) {
+            let seat = seatMap[y][x];
+            let nearby = getNearby(seatMap, x, y);
+            let occupied = nearby.filter(s => s === '#');
 
-            switch (seat.val) {
+            switch (seat) {
                 case 'L':
-                    newSeatMap.push({x: x, y: y, val: (occupied.length === 0) ? '#' : 'L'})
-                    // seat.val = (occupied.length === 0) ? '#' : 'L';
+                    row.push((occupied.length === 0) ? '#' : 'L');
                     break;
                 case '#':
-                    newSeatMap.push({x: x, y: y, val: (occupied.length >= 4) ? 'L' : '#'})
-                    // seat.val = (occupied.length >= 4) ? 'L' : '#';
+                    row.push((occupied.length >= 4) ? 'L' : '#');
                     break;
                 case '.':
-                    newSeatMap.push({x: x, y: y, val: '.'})
+                    row.push('.');
                     break;
             }
         }
+        newSeatMap.push(row);
     }
 
     return newSeatMap;
@@ -66,22 +60,25 @@ function doRound(seatMap, maxX, maxY) {
 function getNearby(seatMap, startX, startY) {
     let out = [];
     for(let y = startY-1; y <= startY+1; y++) {
-        for (let x = startX-1; x <= startX+1; x++) {
-            let seat = seatMap.filter(seat => seat.x === x && seat.y === y)[0];
-            if (seat !== undefined) {
-                out.push(seat);
+        let row = seatMap[y];
+        if (row !== undefined) {
+            for (let x = startX-1; x <= startX+1; x++) {
+                let seat = row[x];
+                if (seat !== undefined && !(x === startX && y === startY)) {
+                    out.push(seat);
+                }
             }
         }
     }
     return out;
 }
 
-function print(seatMap, maxX, maxY, round) {
+function print(seatMap, round) {
     let out = `Round ${round}\n`;
-    for(let y = 0; y <= maxY; y++) {
+    for(let y = 0; y < seatMap.length; y++) {
         let row = '';
-        for (let x = 0; x <= maxX; x++) {
-            row += seatMap.filter(s => s.x === x && s.y === y)[0].val + ' ';
+        for (let x = 0; x < seatMap[0].length; x++) {
+            row += seatMap[y][x] + ' ';
         }
         out += row + '\n';
     }
