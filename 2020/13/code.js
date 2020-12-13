@@ -24,12 +24,12 @@ function part2(buses) {
         let bus = buses[i];
         while(true) {
             // If we aren't in the right spot, jump again by step, else break 
-            if ((time + bus.offset) % bus.val !== 0) {
-                time += step;
-            } else {
+            if ((time + bus.offset) % bus.val === 0) {
                 // console.log(`found match at time: ${time}`)
                 step = step * bus.val;
                 break;
+            } else {
+                time += step;
             }
         }
     }
