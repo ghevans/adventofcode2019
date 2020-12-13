@@ -23,9 +23,8 @@ function part2(buses) {
     for(let i = 1; i < buses.length; i++) {
         let bus = buses[i];
         while(true) {
-            // If we aren't in the right spot, jump again by step, else break 
+            // We found the next part of pattern, update the step, else loop again by current step
             if ((time + bus.offset) % bus.val === 0) {
-                // console.log(`found match at time: ${time}`)
                 step = step * bus.val;
                 break;
             } else {
