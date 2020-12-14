@@ -24,9 +24,46 @@ function applyMask(mask, val) {
     return parseInt(out,2);
 }
 
-function part2(input) {
-    return "tbd";
+function part2(program) {
+    let mem = {};
+    let currentMask = '';
+
+    for (ins of program) {
+        if(ins[0] === 'mask') {
+            currentMask = ins[1];
+        } else {
+            let bitVal = Number(ins[0].match(/\d+/)).toString(2).padStart(36, '0')
+
+            applyMask2(currentMask, bitVal).forEach(loc => mem[loc] = Number(ins[1]))
+        }
+    }
+    return Object.values(mem).reduce((a,b) => a + b);
+}
+
+function applyMask2(mask, val) {
+    let masked = '';
+    for(let i = 0; i < mask.length; i++) {
+        masked += (mask[i] === '0') ? val[i] : mask[i];
+    }
+
+    return buildOptions(masked).map(opt => parseInt(opt, 2));
+}
+
+function buildOptions(bits) {
+    let options = [''];
+    for(let i = 0; i < bits.length; i++) {
+        let toBeAdded = [];
+        for(let j = 0; j < options.length; j++) {
+            if(bits[i]==='X') {                     
+                toBeAdded.push(options[j]+'1')
+            }
+            options[j] += (bits[i] === 'X') ? '0' : bits[i];
+        }
+
+        if(toBeAdded.length > 0) {options.push.apply(options, toBeAdded)};
+    }
+    return options;
 }
 
 console.log("Part 1 - " + part1(input));
-// console.log("Part 2 - " + part2(input));
+console.log("Part 2 - " + part2(input));
