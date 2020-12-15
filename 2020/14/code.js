@@ -51,17 +51,18 @@ function applyMask2(mask, val) {
 
 function buildOptions(bits) {
     let options = [''];
-    for(let i = 0; i < bits.length; i++) {
+    bits.split('').forEach(bit => {
         let toBeAdded = [];
         for(let j = 0; j < options.length; j++) {
-            if(bits[i]==='X') {                     
+            if(bit === 'X') {                     
                 toBeAdded.push(options[j]+'1')
             }
-            options[j] += (bits[i] === 'X') ? '0' : bits[i];
+            options[j] += (bit === 'X') ? '0' : bit;
         }
 
         if(toBeAdded.length > 0) {options.push.apply(options, toBeAdded)};
-    }
+    });
+
     return options;
 }
 
