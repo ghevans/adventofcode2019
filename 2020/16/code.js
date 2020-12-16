@@ -1,4 +1,3 @@
-const { map } = require('lodash');
 const _ = require('lodash');
 const input = require('./input');
 
@@ -17,7 +16,7 @@ function part1(input) {
 function isValid(rules, val) {
     for(rule of rules) {
         for(range of rule.valid) {
-            if (val >= Number(range[0]) && val <= Number(range[1])) {
+            if (val >= range[0] && val <= range[1]) {
                 return true;
             }
         }
@@ -26,12 +25,11 @@ function isValid(rules, val) {
 }
 
 function part2(input) {
-    let invalid = 0;
     let validTickets = [input.myTicket];
     for(ticket of input.nearby) {
         let valid = true;
         for (val of ticket) {
-            if (!isValid(input.rules, Number(val))) {
+            if (!isValid(input.rules, val)) {
                 valid = false;
                 break;
             }
@@ -47,50 +45,42 @@ function part2(input) {
         possibilities.push(findPossiblePlaces(input.rules, groups[i]));
     }
 
-    let finalMap = new Map();
+    let output = 1;
+    for(loc of findCorrectPlaces(possibilities)) {
+        output *= input.myTicket[loc];
+    }
 
+    return output;
+}
 
-    // find their index
-    // add to map
-    // remove from existing arrays
-    // search for singles
+function findCorrectPlaces(possibilities) {
+    let departLocIds = [];
     let singles = possibilities.filter(poss => poss.length === 1);
-    let i = 1;
     while (singles.length > 0) {
         singles.forEach(single => {
             let index = possibilities.findIndex(elem => elem === single); // find the index
             let name = single[0];
-            if (name.startsWith('depart')) { 
-                finalMap.set(index, name); // add the index and name to the output
+            if (name.startsWith('departure')) { 
+                departLocIds.push(index); // add the index to the output
             }
             possibilities[index] = ''; // remove this from the possibilities 2d list
 
+            // Remove this single from all other group options
             possibilities.forEach(poss => {
-                let index = poss.indexOf(name);
-                if (index >= 0) {
-                    poss = poss.splice(index, 1);
-                }
+                poss = (poss.indexOf(name) >= 0) ? poss.splice(poss.indexOf(name),1) : poss;
             })
-        })
-        // console.log(possibilities)
+        });
         singles = possibilities.filter(poss => poss.length === 1);
-        // console.log(singles);
     }
-    console.log(finalMap)
-
-    // `53,67,73,109,113,107,137,131,71,59,101,179,181,61,97,173,103,89,127,139`
-    // 53*107*101*97*173*89
-    // console.log(possibilities);
-    return invalid;
+    return departLocIds;
 }
 
 function findPossiblePlaces(rules, group) {
     let out = [];
     for (rule of rules) {
         if(group.every(function(val) {
-            let first = (val >= rule.valid[0][0] && val <= rule.valid[0][1])
-            let second = (val >= rule.valid[1][0] && val <= rule.valid[1][1])
-            return first || second;
+            return (val >= rule.valid[0][0] && val <= rule.valid[0][1]) || 
+                   (val >= rule.valid[1][0] && val <= rule.valid[1][1]);
         })) {
             out.push(rule.rule);
         }
@@ -99,7 +89,7 @@ function findPossiblePlaces(rules, group) {
 }
 
 function mergeTickets(tickets) {
-    let out = tickets[0].map(n => [Number(n)]);
+    let out = tickets[0].map(n => [n]);
     for (let i = 1; i < tickets.length; i++) {
         for (let j = 0; j < tickets[i].length; j++) {
             out[j].push(tickets[i][j]);
