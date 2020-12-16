@@ -290,5 +290,3 @@ let testNearby = `7,3,47
 38,6,12`.split('\n').map(s => s.split(',').map(Number));
 
 module.exports = {testRules, testTicket, testNearby, rules, myTicket, nearby};
-
-// module.exports = {rules, myTicket, nearby };
