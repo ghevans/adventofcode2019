@@ -1,5 +1,3 @@
-const { isUndefined } = require("lodash");
-
 let input = `.......#
 ....#...
 ...###.#

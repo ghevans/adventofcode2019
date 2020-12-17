@@ -90,11 +90,6 @@ function print(active) {
 }
 
 function part2(active) {
-    // only keep track of currently active cell locs
-    // each loop:
-    //      build a list of all possible cells that touch ANY of the currently active cells
-    //      eval each option based on the rules
-    // return list.length()
     let hypercube = new Map();
     for (a of active) {
         hypercube.set(`${a.x},${a.y},${a.z},0`, '#')
@@ -104,22 +99,7 @@ function part2(active) {
         for (cell of hypercube.keys()) {
             buildPossibleCells2(cell, possible);
         }
-        console.log(`have ${possible.size} to check`);
-
-        // console.log(hypercube);
-        // for (poss of possible) {
-        //     if (hypercube.has(poss)) {
-        //         console.log(`FOUND: ${poss}`)
-        //     }
-        // }
-
-        // for (poss of possible) {
-        //     let test = active.filter(a => a.x === poss.x && a.y === poss.y && a.z === poss.z)[0];
-        //     poss.state = (test != undefined) ? '#' : '.';
-        // }
-        
         hypercube = evaluatePossibilities2(possible, hypercube);
-        console.log(hypercube.size);
     }
     return hypercube.size;
 }
@@ -152,30 +132,12 @@ function evaluatePossibilities2(possible, hypercube) {
                 }
             }
         }
-        // console.log(`${poss} has ${numActive} neighbors`)
 
-        // If a cube is active and exactly 2 or 3 of its neighbors are also active, the cube remains active. Otherwise, the cube becomes inactive.
-        // If a cube is inactive but exactly 3 of its neighbors are active, the cube becomes active. Otherwise, the cube remains inactive.
-        if (hypercube.has(poss)) {
-            if (numActive === 3 || numActive == 4) { // have to increase it to 3/4 bc we're counting ourself if we were previously active
-                out.set(poss, '#');
-            }
+        if (hypercube.has(poss) && ((numActive === 3 || numActive == 4))) { // have to increase it to 3/4 bc we're counting ourself if we were previously active
+            out.set(poss, '#');
         } else if (numActive === 3) {
             out.set(poss, '#')
         }
-
-
-        // switch(poss.state) {
-        //     case '#':
-                
-        //         break;
-        //     case '.':
-        //         if (numActive === 3) {
-        //             poss.state = '#'
-        //             out.push(poss);
-        //         };
-        //         break;
-        // }
     }
     return out;
 }
