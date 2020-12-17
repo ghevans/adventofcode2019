@@ -51,29 +51,6 @@ function evaluate3d(possible, hypercube) {
     return out;
 }
 
-// Broken after refactor
-function print(active) {
-    let out = '';
-    let minX = _.minBy(active,'x').x;
-    let maxX = _.maxBy(active,'x').x;
-    let minY = _.minBy(active,'y').y;
-    let maxY = _.maxBy(active,'y').y;
-    let minZ = _.minBy(active,'z').z;
-    let maxZ = _.maxBy(active,'z').z;
-    for(let z = minZ; z <= maxZ; z++) {
-        out += `z=${z}\n`;
-        for(let y = minY; y <= maxY; y++) {
-            let row = '';
-            for(let x = minX; x <= maxX; x++) {
-                row += (active.filter(a => a.x === x && a.y === y && a.z === z)[0]) ? '# ' : '. ';
-            }
-            out += row+'\n'
-        }
-        out += '\n'
-    }
-    console.log(out);
-}
-
 function part2(active) {
     let hypercube = new Map();
     for (a of active) {
@@ -129,3 +106,28 @@ function evaluate4d(possible, hypercube) {
 
 console.log("Part 1 - " + part1(input));
 console.log("Part 2 - " + part2(input));
+
+
+
+// Broken after refactor
+function print(active) {
+    let out = '';
+    let minX = _.minBy(active,'x').x;
+    let maxX = _.maxBy(active,'x').x;
+    let minY = _.minBy(active,'y').y;
+    let maxY = _.maxBy(active,'y').y;
+    let minZ = _.minBy(active,'z').z;
+    let maxZ = _.maxBy(active,'z').z;
+    for(let z = minZ; z <= maxZ; z++) {
+        out += `z=${z}\n`;
+        for(let y = minY; y <= maxY; y++) {
+            let row = '';
+            for(let x = minX; x <= maxX; x++) {
+                row += (active.filter(a => a.x === x && a.y === y && a.z === z)[0]) ? '# ' : '. ';
+            }
+            out += row+'\n'
+        }
+        out += '\n'
+    }
+    console.log(out);
+}
