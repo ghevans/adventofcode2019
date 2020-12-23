@@ -41,7 +41,6 @@ function part2() {
 
     playGame(p1,p2,1);
     
-
     return (p1.length > 0) ? getScore(p1) : getScore(p2);
 }
 
