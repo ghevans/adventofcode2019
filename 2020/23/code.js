@@ -1,4 +1,4 @@
-const { remove } = require('lodash');
+const yallist = require('yallist');
 const _ = require('lodash');
 const input = require('./input');
 
@@ -51,9 +51,32 @@ function getDest(cups, curVal) {
     }
 }
 
-function part2(input) {
-    return "tbd";
+function part2(input, moves) {
+    let cups = test;
+    let list = yallist.create();
+    for(let i = 0; i < 1000000; i++) {
+        if (cups[i] !== undefined) {
+            list.push(cups[i])
+        } else {
+            list.push(i);
+        }
+    }
+    list.get(list.length-1).
+    console.log(`done: ${list.length} | ${list.get(list.length-1)}`)
+    // let curPos = 0;
+    // let cups = test;
+    // for(let i = 0; i < moves; i++) {
+    //     let curVal = cups[curPos];
+    //     let nextVal = cups[(curPos+4)%cups.length];
+    //     let toMove = pickUp(cups,curPos+1);
+    //     _.remove(cups, function(val) { return toMove.includes(val);});
+        
+    //     cups.splice(getDest(cups, curVal)+1, 0, ...toMove);
+    //     curPos = cups.indexOf(nextVal);
+    // }
+    
+    // return getAnswer(cups);
 }
 
-console.log("Part 1 - " + part1(input, 100));
-// console.log("Part 2 - " + part2(input));
+// console.log("Part 1 - " + part1(input, 100));
+console.log("Part 2 - " + part2(input,10000000));
