@@ -433,4 +433,4 @@ eneswnwswnwsenenwnwnwwseeswneewsenese
 neswnwewnwnwseenwseesewsenwsweewe
 wseweeenwnesenwwwswnew`;
 
-module.exports = test.split('\n');
+module.exports = input.split('\n');

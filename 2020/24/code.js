@@ -41,10 +41,8 @@ function part1(input) {
             }
         }
         if (tiles.has(`${coor.x},${coor.y}`)) {
-            // console.log(`visited: [${coor.x},${coor.y}] and flipped it back to white`)
             tiles.delete(`${coor.x},${coor.y}`);
         } else {
-            // console.log(`visited: [${coor.x},${coor.y}] and flipped it to black`)
             tiles.add(`${coor.x},${coor.y}`);
         }
     }
@@ -52,29 +50,21 @@ function part1(input) {
 }
 
 function part2(tiles) {
-    // console.log(`total options: ${options.size}`)
     for (let i = 0; i < 100; i++) {
         let options = buildOptions(tiles);
         let nextDay = new Set();
         for (option of options) {
-            // let coor = tile.split(',').map(Number);
             let neighbors = checkCoor(tiles, option);
             if(tiles.has(option)) {
-                // console.log(`current option ${option} is currently BLACK and has ${neighbors} nearby`)
                 if(neighbors === 1 || neighbors === 2) {
-                    // console.log(`will remain black`)
                     nextDay.add(option);
                 }
             } else {
-                // console.log(`current option ${option} is currently WHITE`)
                 if(neighbors === 2) {
-                    // console.log(`will turn BLACK`)
                     nextDay.add(option);
                 }
             }
         }
-    
-        console.log(`Day ${i+1}: ${[...nextDay.values()].length}`)
         tiles = nextDay;
     }
     return [...tiles.values()].length;
@@ -96,12 +86,12 @@ function buildOptions(tiles) {
 function checkCoor(tiles, coor) {
     let out = 0;
     let nearby = buildOptions(new Set().add(coor));
-    nearby.delete(coor);
+    nearby.delete(coor); // remove myself when counting nearby
     for(tile of nearby.values()) {
         out += (tiles.has(tile)) ? 1 : 0;    
     }
     return out;
 }
 
-// console.log("Part 1 - " + [...part1(input).values()].length);
+console.log("Part 1 - " + [...part1(input).values()].length);
 console.log("Part 2 - " + part2(part1(input)));
