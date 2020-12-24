@@ -54,7 +54,7 @@ function part2(tiles) {
         let options = buildOptions(tiles);
         let nextDay = new Set();
         for (option of options) {
-            let neighbors = checkCoor(tiles, option);
+            let neighbors = checkNearby(tiles, option);
             if(tiles.has(option)) {
                 if(neighbors === 1 || neighbors === 2) {
                     nextDay.add(option);
@@ -74,7 +74,7 @@ function buildOptions(tiles) {
     let adjacent = [{x:-1,y:0},{x:0,y:-1},{x:1,y:-1},{x:1,y:0},{x:0,y:1},{x:-1,y:1}];
     let options = new Set();
     for(tile of tiles) {
-        let coor = tile.split(',').map(Number)
+        let coor = tile.split(',').map(Number);
         options.add(tile); // add myself
         for(dir of adjacent) {
             options.add(`${coor[0]+dir.x},${coor[1]+dir.y}`) // add my 6 neighbors
@@ -83,7 +83,7 @@ function buildOptions(tiles) {
     return options;
 }
 
-function checkCoor(tiles, coor) {
+function checkNearby(tiles, coor) {
     let out = 0;
     let nearby = buildOptions(new Set().add(coor));
     nearby.delete(coor); // remove myself when counting nearby
