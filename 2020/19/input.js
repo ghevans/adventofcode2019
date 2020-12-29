@@ -128,7 +128,144 @@ let rules = `56: 39 28 | 110 10
 97: 117 39 | 10 110
 23: 39 121 | 110 9
 107: 39 38 | 110 20
-88: 39 44`.split('\n');;
+88: 39 44`.split('\n');
+
+let parsed = `56: (a(bb|aa)|b(aa|b(a|b)))
+85: ((b(((a|b)a|ab)a|(a|b)(a|b)b)|a(b((a|b)a|ab)|a(ab|b(a|b))))b|(((ab|bb)b|((a|b)b|aa)a)a|(a(bb|aa)|b(aa|b(a|b)))b)a)
+4: (aba|bbb)
+125: ((a(b((a(ab|aa)|b(ab|bb))a|(b((a|b)b|aa)|aab)b)|a(a(b(ba|aa)|abb)|b((ba|aa)b|((a|b)b|aa)a)))|b(((b((a|b)b|aa)|aab)a|((ab|bb)b|((a|b)b|aa)a)b)a|(a(abb|bba)|b(aba|(ba|aa)b))b))a|(a(((b(ba|aa)|a(bb|aa))b|(b(ba|aa)|abb)a)a|(a(bba|bab)|b(aaa|b(ba|aa)))b)|b((b(((a|b)a|ab)a|(a|b)(a|b)b)|a(b((a|b)a|ab)|a(ab|b(a|b))))b|(((ab|bb)b|((a|b)b|aa)a)a|(a(bb|aa)|b(aa|b(a|b)))b)a))b)
+79: (a(ab|aa)|b(ab|bb))
+91: ((b((a|b)b|aa)|aab)a|((ab|bb)b|((a|b)b|aa)a)b)
+60: (a((b(a((a|b)a|ab)|bbb)|a(a((a|b)b|aa)|b(a|b)(a|b)))b|(a((ab|aa)a|(aa|b(a|b))b)|b(b(bb|aa)|abb))a)|b((a((ab|b(a|b))b|(bb|ba)a)|b((ab|bb)b|(bb|ba)a))b|(a(b(a|b)(a|b)|aab)|b(aaa|b(ab|aa)))a))
+101: ((a|b)(a|b)a|(bb|aa)b)
+98: ((bbb|aaa)a|abbb)
+8: (((b(a(((bb|aa)b|bba)a|bbbb)|b((ab|b(a|b))(a|b)b|(a(ab|b(a|b))|b(ba|aa))a))|a(a(a((a|b)(a|b)b|(ab|aa)a)|b(b((a|b)b|aa)|a(ab|aa)))|b(a(((a|b)b|aa)a|(bb|aa)b)|b(b(ba|aa)|abb))))a|(a((b(b(a|b)(a|b)|aab)|a(bbb|a(a|b)(a|b)))b|(baaa|(bab|a(bb|ba))b)a)|b(a((a|b)(ba|aa)b|(bba|(ab|b(a|b))b)a)|b((((a|b)b|aa)a|(ab|b(a|b))b)b|abba)))b)a|((a(b((a(ab|aa)|b(ab|bb))a|(b((a|b)b|aa)|aab)b)|a(a(b(ba|aa)|abb)|b((ba|aa)b|((a|b)b|aa)a)))|b(((b((a|b)b|aa)|aab)a|((ab|bb)b|((a|b)b|aa)a)b)a|(a(abb|bba)|b(aba|(ba|aa)b))b))a|(a(((b(ba|aa)|a(bb|aa))b|(b(ba|aa)|abb)a)a|(a(bba|bab)|b(aaa|b(ba|aa)))b)|b((b(((a|b)a|ab)a|(a|b)(a|b)b)|a(b((a|b)a|ab)|a(ab|b(a|b))))b|(((ab|bb)b|((a|b)b|aa)a)a|(a(bb|aa)|b(aa|b(a|b)))b)a))b)b)
+11: ((((b(a(((bb|aa)b|bba)a|bbbb)|b((ab|b(a|b))(a|b)b|(a(ab|b(a|b))|b(ba|aa))a))|a(a(a((a|b)(a|b)b|(ab|aa)a)|b(b((a|b)b|aa)|a(ab|aa)))|b(a(((a|b)b|aa)a|(bb|aa)b)|b(b(ba|aa)|abb))))a|(a((b(b(a|b)(a|b)|aab)|a(bbb|a(a|b)(a|b)))b|(baaa|(bab|a(bb|ba))b)a)|b(a((a|b)(ba|aa)b|(bba|(ab|b(a|b))b)a)|b((((a|b)b|aa)a|(ab|b(a|b))b)b|abba)))b)a|((a(b((a(ab|aa)|b(ab|bb))a|(b((a|b)b|aa)|aab)b)|a(a(b(ba|aa)|abb)|b((ba|aa)b|((a|b)b|aa)a)))|b(((b((a|b)b|aa)|aab)a|((ab|bb)b|((a|b)b|aa)a)b)a|(a(abb|bba)|b(aba|(ba|aa)b))b))a|(a(((b(ba|aa)|a(bb|aa))b|(b(ba|aa)|abb)a)a|(a(bba|bab)|b(aaa|b(ba|aa)))b)|b((b(((a|b)a|ab)a|(a|b)(a|b)b)|a(b((a|b)a|ab)|a(ab|b(a|b))))b|(((ab|bb)b|((a|b)b|aa)a)a|(a(bb|aa)|b(aa|b(a|b)))b)a))b)b)((b((((bbb|aaa)a|abbb)b|((aba|(ba|aa)b)b|(aab|b(ab|aa))a)a)b|((b(a(ab|bb)|baa)|a(b(ba|aa)|a(bb|aa)))a|(((a|b)(a|b)a|(bb|aa)b)a|((ab|b(a|b))b|(ab|aa)a)b)b)a)|a(a((b(a((a|b)a|ab)|bbb)|a(a((a|b)b|aa)|b(a|b)(a|b)))b|(a((ab|aa)a|(aa|b(a|b))b)|b(b(bb|aa)|abb))a)|b((a((ab|b(a|b))b|(bb|ba)a)|b((ab|bb)b|(bb|ba)a))b|(a(b(a|b)(a|b)|aab)|b(aaa|b(ab|aa)))a)))b|(a(b(a(b(bbb|a(a|b)(a|b))|a((ba|ab)b|bba))|b((a|b)(ba|aa)b|((ab|aa)a|(aa|b(a|b))b)a))|a(((b(ab|bb)|a(bb|ba))a|babb)a|(a(a|b)(ba|aa)|b((ba|aa)a|((a|b)a|ab)b))b))|b(a(b(a((a|b)(a|b)a|(bb|aa)b)|b(aba|bbb))|a(a((aa|b(a|b))b|((a|b)b|aa)a)|b((a|b)(a|b)a|(bb|aa)b)))|b(a(a((aa|b(a|b))b|((a|b)b|aa)a)|baab)|b(b(aab|b(ab|aa))|a(baa|((a|b)a|ab)b)))))a))
+27: (b(a((a|b)a|ab)|bbb)|a(a((a|b)b|aa)|b(a|b)(a|b)))
+104: ((bb|aa)b|bba)
+120: (bba|(ab|b(a|b))b)
+34: (b(((a|b)a|ab)a|(a|b)(a|b)b)|a(b((a|b)a|ab)|a(ab|b(a|b))))
+116: (aaa|b(ba|aa))
+87: (baa|((a|b)a|ab)b)
+76: (((bbb|aaa)a|abbb)b|((aba|(ba|aa)b)b|(aab|b(ab|aa))a)a)
+108: (abb|bba)
+59: (bbb)
+103: (b(a(b(bbb|a(a|b)(a|b))|a((ba|ab)b|bba))|b(((a|b)(ba|aa))b|((ab|aa)a|(aa|b(a|b))b)a))|a(((b(ab|bb)|a(bb|ba))a|babb)a|(a((a|b)(ba|aa))|b((ba|aa)a|((a|b)a|ab)b))b))
+66: (ab|b(a|b))
+62: (a(bba|bab)|b(aaa|b(ba|aa)))
+30: (a(ab|bb)|baa)
+123: (bbb|a(a|b)(a|b))
+93: (a(((a|b)b|aa)a|(bb|aa)b)|b(b(ba|aa)|abb))
+80: aa
+83: ((b(a((a|b)a|ab)|bbb)|a(a((a|b)b|aa)|b(a|b)(a|b)))b|(a((ab|aa)a|(aa|b(a|b))b)|b(b(bb|aa)|abb))a)
+115: ab
+22: (((b((a|b)b|aa)|aab)a|((ab|bb)b|((a|b)b|aa)a)b)a|(a(abb|bba)|b(aba|(ba|aa)b))b)
+17: (b(a(((bb|aa)b|bba)a|bbbb)|b(((ab|b(a|b))(a|b))b|(a(ab|b(a|b))|b(ba|aa))a))|a(a(a((a|b)(a|b)b|(ab|aa)a)|b(b((a|b)b|aa)|a(ab|aa)))|b(a(((a|b)b|aa)a|(bb|aa)b)|b(b(ba|aa)|abb))))
+110: b
+69: ((a|b)b|aa)
+105: (a(b(a((a|b)(a|b)a|(bb|aa)b)|b(aba|bbb))|a(a((aa|b(a|b))b|((a|b)b|aa)a)|b((a|b)(a|b)a|(bb|aa)b)))|b(a(a((aa|b(a|b))b|((a|b)b|aa)a)|baab)|b(b(aab|b(ab|aa))|a(baa|((a|b)a|ab)b))))
+21: (((a|b)(ba|aa))b|(bba|(ab|b(a|b))b)a)
+75: (ba|ab)
+128: (bab|a(bb|ba))
+50: (a(abb|bba)|b(aba|(ba|aa)b))
+70: aab
+48: (a(b(a|b)(a|b)|aab)|b(aaa|b(ab|aa)))
+25: (b(b(a|b)(a|b)|aab)|a(bbb|a(a|b)(a|b)))
+67: (a((aa|b(a|b))b|((a|b)b|aa)a)|b((a|b)(a|b)a|(bb|aa)b))
+114:((aa|b(a|b))b|((a|b)b|aa)a)
+37: bab
+89: (bb|ba)
+32: (((b(ba|aa)|a(bb|aa))b|(b(ba|aa)|abb)a)a|(a(bba|bab)|b(aaa|b(ba|aa)))b)
+130: (bbb|aaa)
+15: (a(a((a|b)(a|b)b|(ab|aa)a)|b(b((a|b)b|aa)|a(ab|aa)))|b(a(((a|b)b|aa)a|(bb|aa)b)|b(b(ba|aa)|abb)))
+20: (b(aab|b(ab|aa))|a(baa|((a|b)a|ab)b))
+61: (aaa|b(ab|aa))
+58: ((a((ab|b(a|b))b|(bb|ba)a)|b((ab|bb)b|(bb|ba)a))b|(a(b(a|b)(a|b)|aab)|b(aaa|b(ab|aa)))a)
+13: ((ab|b(a|b))b|(ab|aa)a)
+44: bb
+112: (a(((b(ba|aa)|a(bb|aa))b|(b(ba|aa)|abb)a)a|(a(bba|bab)|b(aaa|b(ba|aa)))b)|b((b(((a|b)a|ab)a|(a|b)(a|b)b)|a(b((a|b)a|ab)|a(ab|b(a|b))))b|(((ab|bb)b|((a|b)b|aa)a)a|(a(bb|aa)|b(aa|b(a|b)))b)a))
+99: (aba|(ba|aa)b)
+71: (b(bbb|a(a|b)(a|b))|a((ba|ab)b|bba))
+46: (b((a|b)a|ab)|a(ab|b(a|b)))
+129: (b(ab|bb)|a(bb|ba))
+84: ((a|b)(ba|aa))
+36: (a(b(bbb|a(a|b)(a|b))|a((ba|ab)b|bba))|b(((a|b)(ba|aa))b|((ab|aa)a|(aa|b(a|b))b)a))
+78: (b(ba|aa)|a(bb|aa))
+0: 8 11
+100: (b((a|b)b|aa)|a(ab|aa))
+49: ((ba|aa)b|((a|b)b|aa)a)
+9: ((ab|bb)b|(bb|ba)a)
+73: (b((a(ab|aa)|b(ab|bb))a|(b((a|b)b|aa)|aab)b)|a(a(b(ba|aa)|abb)|b((ba|aa)b|((a|b)b|aa)a)))
+35: (((a|b)a|ab)a|(a|b)(a|b)b)
+118: ((((bbb|aaa)a|abbb)b|((aba|(ba|aa)b)b|(aab|b(ab|aa))a)a)b|((b(a(ab|bb)|baa)|a(b(ba|aa)|a(bb|aa)))a|(((a|b)(a|b)a|(bb|aa)b)a|((ab|b(a|b))b|(ab|aa)a)b)b)a)
+12: baa
+53: (((a|b)b|aa)a|(bb|aa)b)
+77: (b(ba|aa)|abb)
+127: (a(((bb|aa)b|bba)a|bbbb)|b(((ab|b(a|b))(a|b))b|(a(ab|b(a|b))|b(ba|aa))a))
+111: (((ab|bb)b|((a|b)b|aa)a)a|(a(bb|aa)|b(aa|b(a|b)))b)
+3: (a((a|b)(a|b)b|(ab|aa)a)|b(b((a|b)b|aa)|a(ab|aa)))
+109: (a|b)(a|b)
+43: (((ab|b(a|b))(a|b))b|(a(ab|b(a|b))|b(ba|aa))a)
+7: (((a|b)(a|b)a|(bb|aa)b)a|((ab|b(a|b))b|(ab|aa)a)b)
+10: (aa|b(a|b))
+121: ((ab|b(a|b))b|(bb|ba)a)
+102: (bba|bab)
+81: (((a|b)(ba|aa))b|((ab|aa)a|(aa|b(a|b))b)a)
+2: ((((a|b)b|aa)a|(ab|b(a|b))b)b|abba)
+82: (a|b)
+29: ((a(ab|aa)|b(ab|bb))a|(b((a|b)b|aa)|aab)b)
+54: (a((a|b)(ba|aa))|b((ba|aa)a|((a|b)a|ab)b))
+64: ((a|b)a|ab)
+65: ((ab|bb)b|((a|b)b|aa)a)
+52: (b((a|b)b|aa)|aab)
+74: ba
+92: (a((b(b(a|b)(a|b)|aab)|a(bbb|a(a|b)(a|b)))b|(baaa|(bab|a(bb|ba))b)a)|b(a(((a|b)(ba|aa))b|(bba|(ab|b(a|b))b)a)|b((((a|b)b|aa)a|(ab|b(a|b))b)b|abba)))
+51: (b(a(ab|bb)|baa)|a(b(ba|aa)|a(bb|aa)))
+28: bb|aa
+126: (a(ab|b(a|b))|b(ba|aa))
+45: ((b(a(((bb|aa)b|bba)a|bbbb)|b(((ab|b(a|b))(a|b))b|(a(ab|b(a|b))|b(ba|aa))a))|a(a(a((a|b)(a|b)b|(ab|aa)a)|b(b((a|b)b|aa)|a(ab|aa)))|b(a(((a|b)b|aa)a|(bb|aa)b)|b(b(ba|aa)|abb))))a|(a((b(b(a|b)(a|b)|aab)|a(bbb|a(a|b)(a|b)))b|(baaa|(bab|a(bb|ba))b)a)|b(a(((a|b)(ba|aa))b|(bba|(ab|b(a|b))b)a)|b((((a|b)b|aa)a|(ab|b(a|b))b)b|abba)))b)
+90: (ba|aa)
+33: (((b(ab|bb)|a(bb|ba))a|babb)a|(a((a|b)(ba|aa))|b((ba|aa)a|((a|b)a|ab)b))b)
+16: (b(bb|aa)|abb)
+72: (aab|b(ab|aa))
+106: (a(b(ba|aa)|abb)|b((ba|aa)b|((a|b)b|aa)a))
+119: (a((ab|aa)a|(aa|b(a|b))b)|b(b(bb|aa)|abb))
+113: ((ba|ab)b|bba)
+18: ((b(ab|bb)|a(bb|ba))a|babb)
+41: ((aba|(ba|aa)b)b|(aab|b(ab|aa))a)
+68: (b((((bbb|aaa)a|abbb)b|((aba|(ba|aa)b)b|(aab|b(ab|aa))a)a)b|((b(a(ab|bb)|baa)|a(b(ba|aa)|a(bb|aa)))a|(((a|b)(a|b)a|(bb|aa)b)a|((ab|b(a|b))b|(ab|aa)a)b)b)a)|a(a((b(a((a|b)a|ab)|bbb)|a(a((a|b)b|aa)|b(a|b)(a|b)))b|(a((ab|aa)a|(aa|b(a|b))b)|b(b(bb|aa)|abb))a)|b((a((ab|b(a|b))b|(bb|ba)a)|b((ab|bb)b|(bb|ba)a))b|(a(b(a|b)(a|b)|aab)|b(aaa|b(ab|aa)))a)))
+6: (baaa|(bab|a(bb|ba))b)
+57: (a(((a|b)(ba|aa))b|(bba|(ab|b(a|b))b)a)|b((((a|b)b|aa)a|(ab|b(a|b))b)b|abba))
+5: ((a|b)(a|b)b|(ab|aa)a)
+47: ((b(a(ab|bb)|baa)|a(b(ba|aa)|a(bb|aa)))a|(((a|b)(a|b)a|(bb|aa)b)a|((ab|b(a|b))b|(ab|aa)a)b)b)
+124: (((a|b)b|aa)a|(ab|b(a|b))b)
+94: (a(b(a(b(bbb|a(a|b)(a|b))|a((ba|ab)b|bba))|b(((a|b)(ba|aa))b|((ab|aa)a|(aa|b(a|b))b)a))|a(((b(ab|bb)|a(bb|ba))a|babb)a|(a((a|b)(ba|aa))|b((ba|aa)a|((a|b)a|ab)b))b))|b(a(b(a((a|b)(a|b)a|(bb|aa)b)|b(aba|bbb))|a(a((aa|b(a|b))b|((a|b)b|aa)a)|b((a|b)(a|b)a|(bb|aa)b)))|b(a(a((aa|b(a|b))b|((a|b)b|aa)a)|baab)|b(b(aab|b(ab|aa))|a(baa|((a|b)a|ab)b)))))
+39: "a"
+1: (a((a|b)a|ab)|bbb)
+117: (ab|aa)
+42: (((b(a(((bb|aa)b|bba)a|bbbb)|b((ab|b(a|b))(a|b)b|(a(ab|b(a|b))|b(ba|aa))a))|a(a(a((a|b)(a|b)b|(ab|aa)a)|b(b((a|b)b|aa)|a(ab|aa)))|b(a(((a|b)b|aa)a|(bb|aa)b)|b(b(ba|aa)|abb))))a|(a((b(b(a|b)(a|b)|aab)|a(bbb|a(a|b)(a|b)))b|(baaa|(bab|a(bb|ba))b)a)|b(a((a|b)(ba|aa)b|(bba|(ab|b(a|b))b)a)|b((((a|b)b|aa)a|(ab|b(a|b))b)b|abba)))b)a|((a(b((a(ab|aa)|b(ab|bb))a|(b((a|b)b|aa)|aab)b)|a(a(b(ba|aa)|abb)|b((ba|aa)b|((a|b)b|aa)a)))|b(((b((a|b)b|aa)|aab)a|((ab|bb)b|((a|b)b|aa)a)b)a|(a(abb|bba)|b(aba|(ba|aa)b))b))a|(a(((b(ba|aa)|a(bb|aa))b|(b(ba|aa)|abb)a)a|(a(bba|bab)|b(aaa|b(ba|aa)))b)|b((b(((a|b)a|ab)a|(a|b)(a|b)b)|a(b((a|b)a|ab)|a(ab|b(a|b))))b|(((ab|bb)b|((a|b)b|aa)a)a|(a(bb|aa)|b(aa|b(a|b)))b)a))b)b)
+19: ((b(b(a|b)(a|b)|aab)|a(bbb|a(a|b)(a|b)))b|(baaa|(bab|a(bb|ba))b)a)
+26: ((b(ba|aa)|a(bb|aa))b|(b(ba|aa)|abb)a)
+96: (a(b((a(ab|aa)|b(ab|bb))a|(b((a|b)b|aa)|aab)b)|a(a(b(ba|aa)|abb)|b((ba|aa)b|((a|b)b|aa)a)))|b(((b((a|b)b|aa)|aab)a|((ab|bb)b|((a|b)b|aa)a)b)a|(a(abb|bba)|b(aba|(ba|aa)b))b))
+38: (a((aa|b(a|b))b|((a|b)b|aa)a)|baab)
+63: (b(a((a|b)(a|b)a|(bb|aa)b)|b(aba|bbb))|a(a((aa|b(a|b))b|((a|b)b|aa)a)|b((a|b)(a|b)a|(bb|aa)b)))
+95: (b(a|b)(a|b)|aab)
+55: ((ab|b(a|b))(a|b))
+14: (((bb|aa)b|bba)a|bbbb)
+40: (a((a|b)(a|b)a|(bb|aa)b)|b(aba|bbb))
+31: ((b((((bbb|aaa)a|abbb)b|((aba|(ba|aa)b)b|(aab|b(ab|aa))a)a)b|((b(a(ab|bb)|baa)|a(b(ba|aa)|a(bb|aa)))a|(((a|b)(a|b)a|(bb|aa)b)a|((ab|b(a|b))b|(ab|aa)a)b)b)a)|a(a((b(a((a|b)a|ab)|bbb)|a(a((a|b)b|aa)|b(a|b)(a|b)))b|(a((ab|aa)a|(aa|b(a|b))b)|b(b(bb|aa)|abb))a)|b((a((ab|b(a|b))b|(bb|ba)a)|b((ab|bb)b|(bb|ba)a))b|(a(b(a|b)(a|b)|aab)|b(aaa|b(ab|aa)))a)))b|(a(b(a(b(bbb|a(a|b)(a|b))|a((ba|ab)b|bba))|b((a|b)(ba|aa)b|((ab|aa)a|(aa|b(a|b))b)a))|a(((b(ab|bb)|a(bb|ba))a|babb)a|(a(a|b)(ba|aa)|b((ba|aa)a|((a|b)a|ab)b))b))|b(a(b(a((a|b)(a|b)a|(bb|aa)b)|b(aba|bbb))|a(a((aa|b(a|b))b|((a|b)b|aa)a)|b((a|b)(a|b)a|(bb|aa)b)))|b(a(a((aa|b(a|b))b|((a|b)b|aa)a)|baab)|b(b(aab|b(ab|aa))|a(baa|((a|b)a|ab)b)))))a)
+24: (ab|bb)
+86: (a((a|b)b|aa)|b(a|b)(a|b))
+122: ((ba|aa)a|((a|b)a|ab)b)
+97: ((ab|aa)a|(aa|b(a|b))b)
+23: (a((ab|b(a|b))b|(bb|ba)a)|b((ab|bb)b|(bb|ba)a))
+107: (a(a((aa|b(a|b))b|((a|b)b|aa)a)|baab)|b(b(aab|b(ab|aa))|a(baa|((a|b)a|ab)b)))
+88: abb`.split('\n').map(rule => {
+    return {
+        id: Number(rule.split(': ')[0]),
+        regex: rule.split(': ')[1]
+    }
+})
 
 let msgs = `aaababaaaaaabbbaaaabbaaa
 aaaabbbaaaaaabaaabbabaabbbbaabaaabbbababbbbabbabababaaaa
@@ -633,8 +770,7 @@ abbabbaaabaabbbabbabbaab
 abaabbabbaaababaaabaabbbbababbbbaaaabaaa
 abaababbbbabbbbaababbabb`.split('\n');
 
-let tRules = new Map();
-`0: 4 1 5
+let tRules = `0: 4 1 5
 1: 2 3 | 3 2
 2: 4 4 | 5 5
 3: 4 5 | 5 4
@@ -642,10 +778,10 @@ let tRules = new Map();
 5: "b"`.split('\n').map(rule => {
     let t = rule.split(': ');
     let val = t[1].split(' | ').map(v => v.replace(/["]+/g, ''));
-    if (val.length === 1)
-        tRules.set(Number(t[0]), val[0]);
-    else 
-        tRules.set(Number(t[0]), val)
+    return {
+        id: Number(t[0]),
+        val: val.map(a => a.split(' ').map(Number))
+    }
 });
 
 let tMsgs = `ababbb
@@ -654,4 +790,4 @@ abbbab
 aaabbb
 aaaabbb`.split('\n')
 
-module.exports = {rules, msgs, tRules, tMsgs};
+module.exports = {rules, msgs, tRules, tMsgs, parsed};

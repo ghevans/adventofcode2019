@@ -2,22 +2,11 @@ const _ = require('lodash');
 const input = require('./input');
 
 function part1(input) {
-    let rules = input.tRules;
-    console.log(input.tRules);
-    let start = input.tRules.get(0);
-    // console.log(start)
-    let parts = start[0].split(' ');
-    let out = '';
-    
-    let leg = []
-    console.log(rules.entries())
+    let rule8 = input.parsed.find(rule => rule.id === 8).regex;
+    let rule11 = input.parsed.find(rule => rule.id === 11).regex;
 
-    for(val of rules.values()) {
-        console.log(val)
-        console.log(isNaN(val[0]))
-    }
-
-    return "tbd";
+    let regex = new RegExp(`^${rule8}${rule11}$`);
+    return input.msgs.filter(msg => regex.test(msg)).length
 }
 
 function part2(input) {
@@ -25,4 +14,4 @@ function part2(input) {
 }
 
 console.log("Part 1 - " + part1(input));
-console.log("Part 2 - " + part2(input));
+// console.log("Part 2 - " + part2(input));
