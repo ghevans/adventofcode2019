@@ -6,46 +6,51 @@ class Tile {
 
     // always rotates 90 degrees clockwise
     rotate() {
-        this.print();
         let newGrid = [...Array(this.grid.length)].map(x=>Array(this.grid.length));
         for(let y = 0; y < this.grid.length; y++) {
             for(let x = 0; x < this.grid[0].length; x++) {
                 newGrid[x][this.grid.length-y-1] = this.grid[y][x];
             }
         }
-        console.log(`rotated 90 degrees clockwise`);
-        this.grid = newGrid;
-        this.print();
+        return new Tile(this.id, newGrid);
     }
 
     flipOnX() {
-        this.print();
         let newGrid = Array(this.grid.length);
         for(let y = 0; y < this.grid.length; y++) {
             newGrid[y] = this.grid[this.grid.length - y - 1];
         }
-        console.log(`flipped along X`);
-        this.grid = newGrid;
-        this.print();
+        return new Tile(this.id, newGrid);
     }
 
     flipOnY() {
-        this.print();
         let newGrid = Array(this.grid.length);
         for(let y = 0; y < this.grid.length; y++) {  
             newGrid[y] = this.grid[y].split('').reverse().join('');
         }
-        console.log(`flipped along Y`);
-        this.grid = newGrid;
-        this.print();
+        return new Tile(this.id, newGrid);
     }
 
-    print() {
+    getEdges() {
+        let topEdge = this.grid[0];
+        let leftEdge = this.rotate().grid[0].join('');
+        let bottomEdge = this.rotate().rotate().grid[0].join('');
+        let rightEdge = this.rotate().rotate().rotate().grid[0].join('');
+
+        return {
+            top: topEdge,
+            right: rightEdge,
+            bottom: bottomEdge,
+            left: leftEdge
+        }
+    }
+
+    static print(grid) {
         let out = "";
-        for(let y = 0; y < this.grid.length; y++) {
+        for(let y = 0; y < grid.length; y++) {
             let row = "";
-            for (let x = 0; x < this.grid[0].length; x++) {
-                row += `${this.grid[y][x]} `;
+            for (let x = 0; x < grid[0].length; x++) {
+                row += `${grid[y][x]} `;
             }
             out += `${row}\n`;
         }
@@ -1898,4 +1903,4 @@ Tile 3079:
     return new Tile(parts[0].slice(-4), parts[1].split('\n'));
 });
 
-module.exports = {input, test};
+module.exports = {input, test, Tile};
