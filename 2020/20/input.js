@@ -4,15 +4,23 @@ class Tile {
         this.grid = grid;
     }
 
-    // always rotates 90 degrees clockwise
-    rotate() {
-        let newGrid = [...Array(this.grid.length)].map(x=>Array(this.grid.length));
-        for(let y = 0; y < this.grid.length; y++) {
-            for(let x = 0; x < this.grid[0].length; x++) {
-                newGrid[x][this.grid.length-y-1] = this.grid[y][x];
+    // Rotates 90 degrees clockwise for the number of turns specified
+    rotate(turns) {
+        let newTile = new Tile(this.id, this.grid);
+        for(let i = 0; i < turns; i++) {
+            newTile.grid = this.#rotate(newTile.grid);
+        }
+        return newTile;
+    }
+
+    #rotate(grid) {
+        let newGrid = [...Array(grid.length)].map(x=>Array(grid.length));
+        for(let y = 0; y < grid.length; y++) {
+            for(let x = 0; x < grid[0].length; x++) {
+                newGrid[x][grid.length-y-1] = grid[y][x];
             }
         }
-        return new Tile(this.id, newGrid);
+        return newGrid;
     }
 
     flipOnX() {
@@ -23,34 +31,27 @@ class Tile {
         return new Tile(this.id, newGrid);
     }
 
-    flipOnY() {
-        let newGrid = Array(this.grid.length);
-        for(let y = 0; y < this.grid.length; y++) {  
-            newGrid[y] = this.grid[y].split('').reverse().join('');
-        }
-        return new Tile(this.id, newGrid);
-    }
+    // flipOnY() {
+    //     let newGrid = Array(this.grid.length);
+    //     for(let y = 0; y < this.grid.length; y++) {  
+    //         newGrid[y] = this.grid[y].split('').reverse().join('');
+    //     }
+    //     return new Tile(this.id, newGrid);
+    // }
 
     getEdges() {
-        let topEdge = this.grid[0];
-        let leftEdge = this.rotate().grid[0].join('');
-        let bottomEdge = this.rotate().rotate().grid[0].join('');
-        let rightEdge = this.rotate().rotate().rotate().grid[0].join('');
-
-        return {
-            top: topEdge,
-            right: rightEdge,
-            bottom: bottomEdge,
-            left: leftEdge
-        }
+        return [this.grid[0],
+                this.rotate(1).grid[0].join(''),
+                this.rotate(2).grid[0].join(''),
+                this.rotate(3).grid[0].join('')];
     }
 
-    static print(grid) {
-        let out = "";
-        for(let y = 0; y < grid.length; y++) {
+    static print(tile) {
+        let out = `Tile ${tile.id}\n`;
+        for(let y = 0; y < tile.grid.length; y++) {
             let row = "";
-            for (let x = 0; x < grid[0].length; x++) {
-                row += `${grid[y][x]} `;
+            for (let x = 0; x < tile.grid[0].length; x++) {
+                row += `${tile.grid[y][x]} `;
             }
             out += `${row}\n`;
         }
@@ -1786,10 +1787,7 @@ Tile 3061:
 .....#.#..
 #..#....##`.split('\n\n').map(tile => {
     let parts = tile.split(`:\n`);
-    return {
-        id: Number(parts[0].slice(-4)),
-        tile: parts[1].split('\n')
-    }
+    return new Tile(parts[0].slice(-4), parts[1].split('\n'));
 });
 
 let test = `Tile 2311:
