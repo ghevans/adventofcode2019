@@ -2,6 +2,7 @@ class Tile {
     constructor(id, grid) {
         this.id = Number(id);
         this.grid = grid;
+        this.neighbors = new Set();
     }
 
     // Rotates 90 degrees clockwise for the number of turns specified
@@ -31,19 +32,23 @@ class Tile {
         return new Tile(this.id, newGrid);
     }
 
-    // flipOnY() {
-    //     let newGrid = Array(this.grid.length);
-    //     for(let y = 0; y < this.grid.length; y++) {  
-    //         newGrid[y] = this.grid[y].split('').reverse().join('');
-    //     }
-    //     return new Tile(this.id, newGrid);
-    // }
-
     getEdges() {
         return [this.grid[0],
                 this.rotate(1).grid[0].join(''),
                 this.rotate(2).grid[0].join(''),
                 this.rotate(3).grid[0].join('')];
+    }
+
+    removeEdges() {
+        let newGrid = [...Array(this.grid.length-2)].map(x=>Array(this.grid.length-2));
+        for (let y = 0; y < this.grid.length - 2; y++) {
+            newGrid[y] = this.grid[y+1].slice(1,this.grid[y+1].length-1);
+        }
+        return new Tile(this.id, newGrid);
+    }
+
+    addNeighbor(tileId) {
+        this.neighbors.add(tileId);
     }
 
     static print(tile) {
