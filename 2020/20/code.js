@@ -154,15 +154,7 @@ function part2(grid) {
         orderedGrid[y][x] = nextTile.id;
         startRowTile = currentTile = nextTile;
     }
-    printGrid(grid, orderedGrid)
 
-    // Tile.print(grid.find(t=>t.id===3461));
-    // Tile.print(grid.find(t=>t.id===3803));
-    // console.log(`looking for: ${t2.edges.bottom}`)
-    // console.log(grid.find(t=>t.id !== t2.id && t.edgePossibilities.includes(t2.edges.bottom)))
-    // for(tile of grid) {
-    //     Tile.print(tile);
-    // }
     // remove edges from all tiles
     // build full grid
     for([index, tile] of grid.entries()) {
@@ -178,12 +170,7 @@ function part2(grid) {
             // find sea monsters
             let numMonsters = searchForMonster(image);
             if(numMonsters > 0) {
-                // answer will be number of # - numberSeaMonsters*15
-                console.log(`waves = ${(image.match(/#/g).length)}`)
-                console.log(`found ${numMonsters} sea monsters`)
-                console.log(image.match(/#/g).length - (numMonsters*15));
-            } else {
-                console.log(`no monsters for this orientation`)
+                console.log(`\nFound ${numMonsters} sea monsters in this image (${image.match(/#/g).length - (numMonsters*15)} roughness)\n${image}`)
             }
             image = rotateImage(image);
         }
@@ -217,11 +204,9 @@ function rotateImage(image) {
 //  #    ##    ##    ###
 //   #  #  #  #  #  #   `;
 function searchForMonster(image) {
-    // console.log(`Searching for monster in:\n${image}\n`)
     let monsterRegex = new RegExp(`.{18}#.(.)*\n(.)*#.{4}##.{4}##.{4}###.(.)*\n(.)*.#..#..#..#..#..#...`,'g');
     let numberMonsters = 0;
     while ((myArray = monsterRegex.exec(image)) !== null) {
-        // console.log(`Found MONSTER!!!`);
         numberMonsters++;
     }
 
@@ -247,7 +232,7 @@ function printGrid(grid, orderedGrid) {
         out += tileRow + '\n'
         ret += retTR;
     }
-    console.log(out);
+    // console.log(out);
     return ret.slice(0,-1);
 }
 
