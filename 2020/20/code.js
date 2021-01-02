@@ -1,7 +1,6 @@
 const _ = require('lodash');
 const Tile = require ('./tile')
 const {input, test} = require('./input');
-const { e } = require('mathjs');
 
 function part1(grid) {
     let edgeMap = findPairs(grid);
@@ -57,18 +56,29 @@ function part2(grid) {
 
     // determine ordering of tiles
     let x = y = 0;
-    let currentTile = startRowTile = grid.find(tile => tile.neighborTiles.size === 2 && tile.neighbors.right !== null && tile.neighbors.bottom !== null);
+    // let corners = grid.filter(tile => tile.neighborTiles.size === 2 && tile.neighborTiles.bottom !== null);
+    let currentTile = startRowTile = grid.find(tile => tile.neighborTiles.size === 2 && tile.neighbors.right !== null && tile.neighbors.bottom !== null);;
     let orderedGrid = [...Array(size)].map(x=>Array(size))
     orderedGrid[0][0] = currentTile.id;
-    while(currentTile.neighbors.bottom != null || currentTile.neighbors.right !== null) {
-        while(currentTile.neighbors.right !== null) {
-            let edgeToMatch = currentTile.edges.right;
-            let nextTile = grid.find(tile => tile.id === currentTile.neighbors.right);
-            let nextTileIndex = grid.findIndex(tile => tile.id === currentTile.neighbors.right)
+    // console.log(`currentTile: ${currentTile.id}`);console.log(currentTile.neighbors)
 
+    while(true) {
+        // console.log(`starting new row with ${currentTile.id}`)
+        while(true) {
+            let edgeToMatch = currentTile.edges.right;
+            // console.log(currentTile)
+            let nextTile = grid.find(tile => tile.id !== currentTile.id && tile.edgePossibilities.includes(edgeToMatch));
+            if (nextTile === undefined) {
+                // console.log("here")
+                break;
+            }
+            // console.log(`nextTile: ${nextTile.id}`);
+
+            let nextTileIndex = grid.findIndex(tile => tile.id === nextTile.id);
             if(edgeToMatch !== nextTile.edges.left) {
                 let nextLeftFlipped = nextTile.edges.left.split('').reverse().join('');
                 if(edgeToMatch === nextLeftFlipped) {
+                    // console.log(`CORRECTLY ALIGNED ${nextTile.id} to ${currentTile.id} AFTER FLIP`)
                     nextTile = nextTile.flipOnX();
                     nextTile.updateEdges();
                     grid[nextTileIndex] = nextTile;
@@ -78,29 +88,43 @@ function part2(grid) {
                         nextTile.updateEdges();
                         grid[nextTileIndex] = nextTile;
                         if(edgeToMatch === nextTile.edges.left) {
+                            // console.log(`CORRECTLY ALIGNED ${nextTile.id} to ${currentTile.id} AFTER ${i} ROTATION(s)`);
                             break;
+                        } else {
+                            nextLeftFlipped = nextTile.edges.left.split('').reverse().join('');
+                            if(edgeToMatch === nextLeftFlipped) {
+                                // console.log(`CORRECTLY ALIGNED ${nextTile.id} to ${currentTile.id} AFTER ${i} ROTATION(s) AND A FLIP`)
+                                nextTile = nextTile.flipOnX();
+                                nextTile.updateEdges();
+                                grid[nextTileIndex] = nextTile;
+                                break;
+                            } 
                         }
                     }
                 }
+            } else {
+                // console.log(`CORRECTLY ALIGNED ${nextTile.id} to ${currentTile.id} BY DEFAULT`);
             }
 
             x++;
             orderedGrid[y][x] = nextTile.id;
             currentTile = nextTile;
         }       
-
+        
         edgeToMatch = startRowTile.edges.bottom;
-        let nextTile = grid.find(tile => tile.id === startRowTile.neighbors.bottom);
-        let nextTileIndex = grid.findIndex(tile => tile.id === startRowTile.neighbors.bottom)
-
+        // console.log(`back at the start with ${startRowTile.id}`)
+        let nextTile = grid.find(tile => tile.id !== startRowTile.id && tile.edgePossibilities.includes(edgeToMatch));
         if(nextTile === undefined) {
             break; // this is when we've hit the bottom and are done
         }
+        let nextTileIndex = grid.findIndex(tile => tile.id === nextTile.id)
+        // console.log(`next row will start with ${nextTile.id} matching ${startRowTile.edges.bottom} === ${nextTile.edgePossibilities}`)
 
         if(edgeToMatch !== nextTile.edges.top) {
             let nextTopFlipped = nextTile.edges.top.split('').reverse().join('');
             if(edgeToMatch === nextTopFlipped) {
-                nextTile = nextTile.flipOnX();
+                // console.log(`CORRECTLY ALIGNED ${nextTile.id} to ${currentTile.id} AFTER FLIP`)
+                nextTile = nextTile.rotate(2).flipOnX();
                 nextTile.updateEdges();
                 grid[nextTileIndex] = nextTile;
             } else {
@@ -109,19 +133,36 @@ function part2(grid) {
                     nextTile.updateEdges();
                     grid[nextTileIndex] = nextTile;
                     if(edgeToMatch === nextTile.edges.top) {
+                        // console.log(`CORRECTLY ALIGNED ${nextTile.id} to ${currentTile.id} AFTER ${i} ROTATION(s)`);
                         break;
+                    } else {
+                        nextTopFlipped = nextTile.edges.top.split('').reverse().join('');
+                        if(edgeToMatch === nextTopFlipped) {
+                            // console.log(`CORRECTLY ALIGNED AFTER  ${i} ROTATION(s) AND A FLIP`)
+                            nextTile = nextTile.rotate(2).flipOnX();
+                            nextTile.updateEdges();
+                            grid[nextTileIndex] = nextTile;
+                            break;
+                        } 
                     }
                 }
             }
+        } else {
+            // console.log(`CORRECTLY ALIGNED ${nextTile.id} to ${currentTile.id} BY DEFAULT`);
         }
-        
         y++; x = 0;
         orderedGrid[y][x] = nextTile.id;
         startRowTile = currentTile = nextTile;
     }
-    console.log(orderedGrid);
-    // printGrid(grid, orderedGrid);
+    printGrid(grid, orderedGrid)
 
+    // Tile.print(grid.find(t=>t.id===3461));
+    // Tile.print(grid.find(t=>t.id===3803));
+    // console.log(`looking for: ${t2.edges.bottom}`)
+    // console.log(grid.find(t=>t.id !== t2.id && t.edgePossibilities.includes(t2.edges.bottom)))
+    // for(tile of grid) {
+    //     Tile.print(tile);
+    // }
     // remove edges from all tiles
     // build full grid
     for([index, tile] of grid.entries()) {
@@ -133,17 +174,31 @@ function part2(grid) {
 
     // determine proper orientation to find sea monsters
     for(let j = 0; j < 2; j++) {
-        for(let i = 1; i <= 4; i++) {
+        for(let i = 0; i < 4; i++) {
             // find sea monsters
             let numMonsters = searchForMonster(image);
             if(numMonsters > 0) {
                 // answer will be number of # - numberSeaMonsters*15
-                return (image.match(/#/g).length - (numMonsters*15))
+                console.log(`waves = ${(image.match(/#/g).length)}`)
+                console.log(`found ${numMonsters} sea monsters`)
+                console.log(image.match(/#/g).length - (numMonsters*15));
+            } else {
+                console.log(`no monsters for this orientation`)
             }
             image = rotateImage(image);
         }
         // do flip
+        image = flipImage(image);
     }
+}
+
+function flipImage(image) {
+    image = image.split('\n')
+    let newImage = Array(image.length);
+    for(let y = 0; y < image.length; y++) {
+        newImage[y] = image[image.length - y - 1];
+    }
+    return newImage.join('\n');
 }
 
 function rotateImage(image) {
@@ -162,11 +217,11 @@ function rotateImage(image) {
 //  #    ##    ##    ###
 //   #  #  #  #  #  #   `;
 function searchForMonster(image) {
-    console.log(`Searching for monster in:\n${image}\n`)
+    // console.log(`Searching for monster in:\n${image}\n`)
     let monsterRegex = new RegExp(`.{18}#.(.)*\n(.)*#.{4}##.{4}##.{4}###.(.)*\n(.)*.#..#..#..#..#..#...`,'g');
     let numberMonsters = 0;
     while ((myArray = monsterRegex.exec(image)) !== null) {
-        console.log(`Found MONSTER!!!`);
+        // console.log(`Found MONSTER!!!`);
         numberMonsters++;
     }
 
