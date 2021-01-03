@@ -56,29 +56,21 @@ function part2(grid) {
 
     // determine ordering of tiles
     let x = y = 0;
-    // let corners = grid.filter(tile => tile.neighborTiles.size === 2 && tile.neighborTiles.bottom !== null);
     let currentTile = startRowTile = grid.find(tile => tile.neighborTiles.size === 2 && tile.neighbors.right !== null && tile.neighbors.bottom !== null);;
     let orderedGrid = [...Array(size)].map(x=>Array(size))
     orderedGrid[0][0] = currentTile.id;
-    // console.log(`currentTile: ${currentTile.id}`);console.log(currentTile.neighbors)
-
     while(true) {
-        // console.log(`starting new row with ${currentTile.id}`)
         while(true) {
             let edgeToMatch = currentTile.edges.right;
-            // console.log(currentTile)
             let nextTile = grid.find(tile => tile.id !== currentTile.id && tile.edgePossibilities.includes(edgeToMatch));
             if (nextTile === undefined) {
-                // console.log("here")
                 break;
             }
-            // console.log(`nextTile: ${nextTile.id}`);
 
             let nextTileIndex = grid.findIndex(tile => tile.id === nextTile.id);
             if(edgeToMatch !== nextTile.edges.left) {
                 let nextLeftFlipped = nextTile.edges.left.split('').reverse().join('');
                 if(edgeToMatch === nextLeftFlipped) {
-                    // console.log(`CORRECTLY ALIGNED ${nextTile.id} to ${currentTile.id} AFTER FLIP`)
                     nextTile = nextTile.flipOnX();
                     nextTile.updateEdges();
                     grid[nextTileIndex] = nextTile;
@@ -88,12 +80,10 @@ function part2(grid) {
                         nextTile.updateEdges();
                         grid[nextTileIndex] = nextTile;
                         if(edgeToMatch === nextTile.edges.left) {
-                            // console.log(`CORRECTLY ALIGNED ${nextTile.id} to ${currentTile.id} AFTER ${i} ROTATION(s)`);
                             break;
                         } else {
                             nextLeftFlipped = nextTile.edges.left.split('').reverse().join('');
                             if(edgeToMatch === nextLeftFlipped) {
-                                // console.log(`CORRECTLY ALIGNED ${nextTile.id} to ${currentTile.id} AFTER ${i} ROTATION(s) AND A FLIP`)
                                 nextTile = nextTile.flipOnX();
                                 nextTile.updateEdges();
                                 grid[nextTileIndex] = nextTile;
@@ -102,8 +92,6 @@ function part2(grid) {
                         }
                     }
                 }
-            } else {
-                // console.log(`CORRECTLY ALIGNED ${nextTile.id} to ${currentTile.id} BY DEFAULT`);
             }
 
             x++;
@@ -112,18 +100,15 @@ function part2(grid) {
         }       
         
         edgeToMatch = startRowTile.edges.bottom;
-        // console.log(`back at the start with ${startRowTile.id}`)
         let nextTile = grid.find(tile => tile.id !== startRowTile.id && tile.edgePossibilities.includes(edgeToMatch));
         if(nextTile === undefined) {
             break; // this is when we've hit the bottom and are done
         }
         let nextTileIndex = grid.findIndex(tile => tile.id === nextTile.id)
-        // console.log(`next row will start with ${nextTile.id} matching ${startRowTile.edges.bottom} === ${nextTile.edgePossibilities}`)
 
         if(edgeToMatch !== nextTile.edges.top) {
             let nextTopFlipped = nextTile.edges.top.split('').reverse().join('');
             if(edgeToMatch === nextTopFlipped) {
-                // console.log(`CORRECTLY ALIGNED ${nextTile.id} to ${currentTile.id} AFTER FLIP`)
                 nextTile = nextTile.rotate(2).flipOnX();
                 nextTile.updateEdges();
                 grid[nextTileIndex] = nextTile;
@@ -133,12 +118,10 @@ function part2(grid) {
                     nextTile.updateEdges();
                     grid[nextTileIndex] = nextTile;
                     if(edgeToMatch === nextTile.edges.top) {
-                        // console.log(`CORRECTLY ALIGNED ${nextTile.id} to ${currentTile.id} AFTER ${i} ROTATION(s)`);
                         break;
                     } else {
                         nextTopFlipped = nextTile.edges.top.split('').reverse().join('');
                         if(edgeToMatch === nextTopFlipped) {
-                            // console.log(`CORRECTLY ALIGNED AFTER  ${i} ROTATION(s) AND A FLIP`)
                             nextTile = nextTile.rotate(2).flipOnX();
                             nextTile.updateEdges();
                             grid[nextTileIndex] = nextTile;
@@ -147,9 +130,8 @@ function part2(grid) {
                     }
                 }
             }
-        } else {
-            // console.log(`CORRECTLY ALIGNED ${nextTile.id} to ${currentTile.id} BY DEFAULT`);
         }
+
         y++; x = 0;
         orderedGrid[y][x] = nextTile.id;
         startRowTile = currentTile = nextTile;
@@ -170,7 +152,8 @@ function part2(grid) {
             // find sea monsters
             let numMonsters = searchForMonster(image);
             if(numMonsters > 0) {
-                console.log(`\nFound ${numMonsters} sea monsters in this image (${image.match(/#/g).length - (numMonsters*15)} roughness)\n${image}`)
+                console.log(`Found ${numMonsters} sea monsters in this image (${image.match(/#/g).length - (numMonsters*15)} roughness)`)
+                return image.match(/#/g).length - (numMonsters*15);
             }
             image = rotateImage(image);
         }
@@ -199,18 +182,37 @@ function rotateImage(image) {
     return newImage.map(row => row.join('')).join('\n');
 }
 
+function searchForMonster(image) {
+    let numberMonsters = 0;
+    image = image.split('\n').map(row => row.split(''));
+    for(let y = 0; y <= image.length - 3; y++) {
+        for (let x = 0; x <= image[0].length - 20; x++) {
+            if(checkLocation(image, x, y)) {
+                numberMonsters++;
+            }
+        }
+    }
+
+    return numberMonsters;
+}
+
 // monster =>
 // `                  # 
 //  #    ##    ##    ###
 //   #  #  #  #  #  #   `;
-function searchForMonster(image) {
-    let monsterRegex = new RegExp(`.{18}#.(.)*\n(.)*#.{4}##.{4}##.{4}###.(.)*\n(.)*.#..#..#..#..#..#...`,'g');
-    let numberMonsters = 0;
-    while ((myArray = monsterRegex.exec(image)) !== null) {
-        numberMonsters++;
-    }
+function checkLocation(image, x, y) {
+    const monster = `                  # 
+#    ##    ##    ###
+ #  #  #  #  #  #   `.split('\n')
+                    .flatMap((row, y) => row.split('')
+                                            .map((val, x) => {if (val === '#') return [y,x];}).filter(val => val !== undefined));
 
-    return numberMonsters;
+    for(loc of monster) {
+        if(image[y+loc[0]][x+loc[1]] !== '#') {
+            return false;
+        }
+    }
+    return true;
 }
 
 function printGrid(grid, orderedGrid) {
@@ -236,5 +238,5 @@ function printGrid(grid, orderedGrid) {
     return ret.slice(0,-1);
 }
 
-// console.log("Part 1 - " + part1(input));
+console.log("Part 1 - " + part1(input));
 console.log("Part 2 - " + part2(input));
